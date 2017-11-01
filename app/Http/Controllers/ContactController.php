@@ -111,7 +111,6 @@ class ContactController extends Controller
     public function index()
     {
 		return $this->showDepartment(0);
-		
     }
 
 
@@ -121,7 +120,6 @@ class ContactController extends Controller
      */
     public function store($id = null)
     {
-
         if ( $redirect = $this->deleteAction(new Contact(), 'contacts') )
         {
             return $redirect;
@@ -148,6 +146,16 @@ class ContactController extends Controller
         $store->add('data.issued','Выдан', 'text');
         $store->add('data.address','Адрес', 'text');
         $store->add('data.date','Дата', 'date');
+		
+		$store->add('data.credit_sum', 'Сумма кредита', 'text');
+		$store->add('data.credit_target', 'Цель кредита', 'text');
+		$store->checkbox('data.is_pledge', 'Залог');
+		$store->checkbox('data.is_guarantor', 'Поручитель');
+		$store->checkbox('data.is_reference', 'Справка о доходах');
+		$store->checkbox('data.is_delay', 'Открытые просрочки');
+		$store->add('data.contact_birth', 'Дата рождения', 'date');
+		$store->add('data.contact_address', 'Место жительства(факт.)', 'text');
+		$store->add('data.contact_inn', 'ИНН', 'text');
 
         $this->preferValues($store);
         $store->submit('Сохранить');
@@ -355,6 +363,7 @@ class ContactController extends Controller
 
 
         $payment->cost = Input::get('price');
+		$payment->income_id = Input::get('income_id');
         $payment->deadline = Carbon::parse(Input::get('payment-date'))->format('Y-m-d H:i');
 
         $payment->save();
@@ -364,7 +373,7 @@ class ContactController extends Controller
         $content = '';
         foreach ($payments as $_payment)
         {
-            $content .= view('contacts.lead.payment', ['_payment' => $_payment, 'leadId' => $leadId, '_lead' => $lead])->render();
+            $content .= view('contacts.lead.payment', ['_payment' => $_payment->with('income'), 'leadId' => $leadId, '_lead' => $lead])->render();
         }
 
         return $content;

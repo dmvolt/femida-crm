@@ -6,6 +6,8 @@ use App\ContactOrigin;
 use App\Department;
 use App\LeadService;
 use App\LeadStatus;
+use App\Cost;
+use App\Income;
 use App\ServicePayment;
 use App\Team;
 use App\User;
@@ -35,8 +37,11 @@ class SettingController extends Controller
         $statuses = $this->getStatusesContent();
         $teams = $this->getTeamsContent();
         $origins = $this->getOriginsContent();
+		
+		$costs = $this->getCostsContent();
+		$incomes = $this->getIncomesContent();
 
-        return view('setting', compact('users', 'departments', 'services', 'statuses', 'teams', 'origins'));
+        return view('setting', compact('users', 'departments', 'services', 'statuses', 'teams', 'origins', 'costs', 'incomes'));
     }
 
     /**
@@ -228,6 +233,49 @@ class SettingController extends Controller
         $title = 'Статус';
         return $store->view('default.store', compact('store', 'title'));
     }
+	
+	public function costStore($id = null)
+    {
+        if ( $id == null ) $id = \Input::get('modify', null);
+        $source = $id ? Cost::find($id) : new Cost();
+
+        $store = \DataForm::source($source);
+        $store->add('name','Наименование', 'text')->rule('required|min:2');
+
+        $store->add('color','Цвет', 'select')->options(Cost::$colorNames);
+        $store->add('type','Группа', 'select')->options(Cost::$typeNames);
+
+        $store->submit('Сохранить');
+
+        $store->saved(function () use ($store) {
+            return redirect('/settings');
+        });
+
+        $store->build();
+
+        $title = 'Типы расходов';
+        return $store->view('default.store', compact('store', 'title'));
+    }
+	
+	public function incomeStore($id = null)
+    {
+        if ( $id == null ) $id = \Input::get('modify', null);
+        $source = $id ? Income::find($id) : new Income();
+
+        $store = \DataForm::source($source);
+        $store->add('name','Наименование', 'text')->rule('required|min:2');
+        $store->add('color','Цвет', 'select')->options(Income::$colorNames);
+        $store->submit('Сохранить');
+
+        $store->saved(function () use ($store) {
+            return redirect('/settings');
+        });
+
+        $store->build();
+
+        $title = 'Типы доходов';
+        return $store->view('default.store', compact('store', 'title'));
+    }
 
     public function getUserContent()
     {
@@ -341,6 +389,56 @@ class SettingController extends Controller
         $grid->paginate(100);
 
         $title = 'Статусы';
+        return view('default.grid', compact('grid', 'title'));
+    }
+	
+	public function getCostsContent()
+    {
+        $grid = DataGrid::source(new Cost());
+        $grid->attributes(["class"=>"table table-striped table-bordered table-hover dataTables-example"]);
+
+        $grid->add('id','ID', true)->style("width:100px");
+		
+		$grid->add('color','Цвет')->cell( function($value, $row) {
+			return '<span class="badge" style="background:'.$value.';color:#fff;">Цвет</span>'; //Cost::$colorNames[$value]
+		});
+		
+		$grid->add('type','Группа')->cell( function($value, $row) {
+			return Cost::$typeNames[$value];
+		});
+		
+        $grid->add('name','Название');
+
+        $grid->edit(route('setting.cost.store'), 'Редактировать','modify')->style("width:15px");
+        $grid->link(route('setting.cost.store'), "Новый вид расходов", "TR");
+
+        $grid->orderBy('id');
+        $grid->paginate(100);
+
+        $title = 'Виды расходов';
+        return view('default.grid', compact('grid', 'title'));
+    }
+	
+	public function getIncomesContent()
+    {
+        $grid = DataGrid::source(new Income());
+        $grid->attributes(["class"=>"table table-striped table-bordered table-hover dataTables-example"]);
+
+        $grid->add('id','ID', true)->style("width:100px");
+		
+		$grid->add('color','Цвет')->cell( function($value, $row) {
+			return '<span class="badge" style="background:'.$value.';color:#fff;">Цвет</span>'; //Income::$colorNames[$value]
+		});
+		
+        $grid->add('name','Название');
+
+        $grid->edit(route('setting.income.store'), 'Редактировать','modify')->style("width:15px");
+        $grid->link(route('setting.income.store'), "Новый вид доходов", "TR");
+
+        $grid->orderBy('id');
+        $grid->paginate(100);
+
+        $title = 'Виды доходов';
         return view('default.grid', compact('grid', 'title'));
     }
 

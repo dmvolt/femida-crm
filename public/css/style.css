@@ -8227,3 +8227,13 @@ body.md-skin {
     margin: 0;
   }
 }
+
+.form-check span {
+	display:block;
+}
+
+.form-check input.checkbox {
+	float:left;
+	margin-right: 15px;
+	top: -3px;
+}

@@ -55,6 +55,10 @@ Route::any('/settings/user/store/{contactId?}', ['as' => 'setting.user.store', '
 Route::any('/settings/department/store/{departmentId?}', ['as' => 'setting.department.store', 'uses' => 'SettingController@departmentStore']);
 Route::any('/settings/teams/store/{teamId?}', ['as' => 'setting.teams.store', 'uses' => 'SettingController@teamStore']);
 Route::any('/settings/service/store/{serviceId?}', ['as' => 'setting.service.store', 'uses' => 'SettingController@serviceStore']);
+
+Route::any('/settings/cost/store/{costId?}', ['as' => 'setting.cost.store', 'uses' => 'SettingController@costStore']);
+Route::any('/settings/income/store/{incomeId?}', ['as' => 'setting.income.store', 'uses' => 'SettingController@incomeStore']);
+
 Route::any('/settings/status/store/{statusId?}', ['as' => 'setting.status.store', 'uses' => 'SettingController@statusStore']);
 Route::any('/settings/origin/store/{originId?}', ['as' => 'setting.origin.store', 'uses' => 'SettingController@originStore']);
 

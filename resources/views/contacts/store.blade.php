@@ -32,7 +32,7 @@
                                         {!! $store->render('email') !!}
                                     </div>
                                     <div class="form-group clearfix">
-                                        {!! $store->render('phone') !!}
+                                        {!! $store->render('phone', ['class' => 'phone']) !!}
                                     </div>
                                     <div class="form-group clearfix">
                                         {!! $store->render('origin_id') !!}
@@ -40,15 +40,14 @@
                                     <div class="form-group clearfix">
                                         {!! $store->render('user_id') !!}
                                     </div>
-
                                 </div>
 
                                 <div class="col-md-5" style="margin-left: 15px;">
                                     <div class="form-group clearfix">
-                                        {!! $store->render('data.number') !!}
+                                        {!! $store->render('data.number', ['class' => 'passport-num']) !!}
                                     </div>
                                     <div class="form-group clearfix">
-                                        {!! $store->render('data.code') !!}
+                                        {!! $store->render('data.code', ['class' => 'passport-code']) !!}
                                     </div>
                                     <div class="form-group clearfix">
                                         {!! $store->render('data.issued') !!}
@@ -58,6 +57,44 @@
                                     </div>
                                     <div class="form-group clearfix">
                                         {!! $store->render('data.date') !!}
+                                    </div>
+                                </div>
+                            </div>
+							
+							<h3>Информация о клиенте</h3>
+							<hr>
+							<div class="row">
+                                <div class="col-md-5 col-md-offset-1" style="">
+                                    <div class="form-group clearfix">
+                                        {!! $store->render('data.contact_birth') !!}
+                                    </div>
+									<div class="form-group clearfix">
+                                        {!! $store->render('data.contact_address') !!}
+                                    </div>
+									<div class="form-group clearfix">
+                                        {!! $store->render('data.contact_inn', ['class' => 'inn']) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5" style="margin-left: 15px;">
+									<div class="form-group clearfix">
+                                        {!! $store->render('data.credit_sum', ['class' => 'sum']) !!}
+                                    </div>
+									<div class="form-group clearfix">
+                                        {!! $store->render('data.credit_target') !!}
+                                    </div>
+									<hr>
+									<div class="form-check clearfix">
+                                        {!! $store->render('data.is_pledge', ['class' => 'checkbox']) !!}
+                                    </div>
+									<div class="form-check clearfix">
+										{!! $store->render('data.is_guarantor', ['class' => 'checkbox']) !!}
+                                    </div>
+									<div class="form-check clearfix">
+										{!! $store->render('data.is_reference', ['class' => 'checkbox']) !!}
+                                    </div>
+									<div class="form-check clearfix">
+										{!! $store->render('data.is_delay', ['class' => 'checkbox']) !!}
                                     </div>
                                 </div>
                             </div>

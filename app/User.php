@@ -155,12 +155,26 @@ class User extends Authenticatable
     {
         return $this->role_id == self::LEADER_ID;
     }
+	
+	public function getProfit($departmentId = null, $dateStart, $dateEnd)
+    {
+        return Task::whereUserId($this->id)->where('type', '=', 'approved_payment')
+                ->where('completed', '=', 'yes')
+                ->where('updated_at', '>=', $dateStart)
+                ->where('updated_at', '<=', $dateEnd)->sum('cost');
+    }
 
     public function getPlannedProfit($departmentId = null, $dateStart, $dateEnd)
     {
         return Task::whereUserId($this->id)->where('type', '=', 'approved_payment')
                 ->where('deadline', '>=', $dateStart)
                 ->where('deadline', '<=', $dateEnd)->sum('cost');
+    }
+	
+	public function getProfitManager($departmentId = null, $dateStart, $dateEnd)
+    {
+        $sum = $this->getProfit($departmentId, $dateStart, $dateEnd);
+        return $sum * $this->bonus / 100;
     }
 
     public function scopeFilterDepartment($query, $departmentId = null)
@@ -185,27 +199,10 @@ class User extends Authenticatable
         return $query;
     }
 
-
-    public function getProfit($departmentId = null, $dateStart, $dateEnd)
-    {
-        return Task::whereUserId($this->id)->where('type', '=', 'approved_payment')
-                ->where('completed', '=', 'yes')
-                ->where('updated_at', '>=', $dateStart)
-                ->where('updated_at', '<=', $dateEnd)->sum('cost');
-    }
-
     public function isBlocked()
     {
         return $this->blocked == 1;
     }
-
-    public function getProfitManager($departmentId = null, $dateStart, $dateEnd)
-    {
-        $sum = $this->getProfit($departmentId, $dateStart, $dateEnd);
-        return $sum * $this->bonus / 100;
-    }
-
-
 
     /**
      * Send the password reset notification.

@@ -145,6 +145,8 @@
 <script src="/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script src="/js/plugins/jsTree/jstree.min.js"></script>
 
+<script src="/js/plugins/maskedinput/jquery.maskedinput.js" type="text/javascript"></script>
+
 {!! Rapyd::scripts() !!}
 
 <script type="text/javascript">
@@ -198,6 +200,13 @@
             "hideMethod": "fadeOut",
             'escapeHtml': true,
         };
+		
+		$(".phone").mask("+7(999) 999-9999");
+		$(".sum").mask("99000");
+		$(".inn").mask("9999999999");
+		$(".passport-num").mask("9999 999999");
+		$(".passport-code").mask("999-999");
+	
         <?php
             foreach ($user->unreadNotifications as $notification)
             {

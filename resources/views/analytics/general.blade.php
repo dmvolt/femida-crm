@@ -50,16 +50,15 @@
 
                 <script type="text/javascript">
                     $(document).ready(function () {
-
                         Morris.Bar({
                             element: 'morris-bar-chart',
                             data: {!! $generalChart !!},
                             xkey: 'y',
-                            ykeys: ['a', 'b'],
-                            labels: ['Доходы', 'Расходы'],
+                            ykeys: {!! $chartKeys !!},
+                            labels: {!! $chartLabels !!},
                             hideHover: 'auto',
                             resize: true,
-                            barColors: ['#1ab394', '#cacaca'],
+                            barColors: {!! $chartColors !!}
                         });
                     });
                 </script>

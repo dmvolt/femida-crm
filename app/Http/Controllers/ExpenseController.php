@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Department;
 use App\Expense;
+use App\Cost;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -19,7 +21,7 @@ class ExpenseController extends Controller
         $this->authorize('show', new Expense());
 
         //$filter = \DataFilter::source(Expense::with(['user', 'department']));
-		$expenses = Expense::with(['user', 'department']);
+		$expenses = Expense::with(['user', 'department', 'cost']);
 		
 		if (! \Auth::user()->isAdmin()) {
 			$expenses = $expenses->where('department_id', '=', \Auth::user()->department_id);
@@ -37,7 +39,8 @@ class ExpenseController extends Controller
         $grid->attributes(["class"=>"table table-striped table-hover"]);
 
         $grid->add('id','ID', true)->style("width:100px");
-        $grid->add('name','Статья расходов');
+		$grid->add('cost.name', 'Статья расходов');
+        $grid->add('name','Коментарий');
         $grid->add('sum','Сумма');
 
         $grid->add('{{$user->name}}','Пользователь');
@@ -78,10 +81,12 @@ class ExpenseController extends Controller
         $source = $isNew ? new Expense() : Expense::find($id) ;
 
         $store = \DataForm::source($source);
-
-        $store->add('name','Имя', 'text')->rule('required|min:2');
-        $store->add('sum','Сумма', 'number')->rule('required|min:2');
-        $store->add('file','Файл', 'file')->move('uploads/');
+		
+		$store->add('cost_id', 'Статья расходов', 'select')->options(Cost::allForSelect());
+		
+        $store->add('name', 'Коментарий', 'text')->rule('required|min:2');
+        $store->add('sum', 'Сумма', 'number')->rule('required|min:2');
+        $store->add('file', 'Файл', 'file')->move('uploads/');
 		if (! \Auth::user()->isAdmin()) 
 		{
 			$store->add('department_id','Филиал', 'select')->options([\Auth::user()->department_id => Department::findOrFail(\Auth::user()->department_id)->name])->attributes(['readonly' => '']);

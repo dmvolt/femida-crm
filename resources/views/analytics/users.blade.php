@@ -3,19 +3,24 @@
         @include('analytics.filters')
 
         <div class="panel panel-default">
-            <div class="panel-body" style="width: 100%; margin-left: 0;">
-                <table class="table table-hover">
+            <div class="panel-body" style="width: 100%; margin-left:0;">
+			
+				<table class="table table-hover">
                     <thead>
                     <tr>
                         <th>ФИО</th>
+						<th>План</th>
 						<th>Логин</th>
-                        <th>Новых сделок</th>
-                        <th>Прибыль</th>
-                        <th>План</th>
-                        <th>Планируемая прибыль</th>
-                        <th>Доход менеджера</th>
-                        <th>Просроченных задач</th>
-                        <th>Выполненных задач</th>
+						<th>Взятых заявок</th>
+						<th>Назначено встреч</th>
+						<th>Назначено звонок</th>
+						<th>Брак</th>
+						<th>Судебное заседание</th>
+						<th>Проведено встреч</th>
+						<th>Новых договоров</th>
+						<th>Принято оплат</th>
+						<th>Планируется доплат на сумму</th>
+						<th>Сумма фактически полученная</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -28,30 +33,87 @@
                         $sumProfitManager = 0;
                         $sumDeadlineTask = 0;
                         $sumCompletedTask = 0;
+						
+						$sumAllTasks = 0;
+						$sumAppointmentTasks = 0;
+						$sumRecallTasks = 0;
+						$sumCancelTasks = 0;
+						$sumCourtHearingTasks = 0;
+						$sumCompletedAppointmentTasks = 0;
+						$sumPaymentCount = 0;
+						
 						$last_login = 'Нет';
                     ?>
                     @foreach(\App\User::filterDepartment($departmentId)->filterTeam($teamId)->get() as $user)
 
                         <?php
 						 // if ($user->blocked !== 1) {
-                            $profit = $user->getProfit($departmentId, $dateStart, $dateEnd);
+                            
+                            //$profitManager = $user->getProfitManager($departmentId, $dateStart, $dateEnd);
+							
+							// всего задач
+							$allTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->count();
+							
+							// назначеных встреч
+							$appointmentTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'make_appointment')->count();
+							
+							// звонок
+							$recallTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'recall')->count();
+							
+							// брак
+							$cancelTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'cancel')->count();
+							
+							// судебное заседание
+							$courtHearingTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'court_hearing')->count();
+							
+                            // фактически проведенных встреч
+							$completedAppointmentTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'make_appointment')->where('completed', '=', 'yes')->count();
+							
+							// новых договоров
+							$userLeads = \App\Lead::whereUserId($user->id)->filterDepartment($departmentId)->filterTeam($teamId)->where('created_at', '>=', $dateStart)->where('created_at', '<=', $dateEnd);
+							$newLead = $userLeads->count();
+							
+							// Планируется доплат на сумму
+							$plannedProfit = $user->getPlannedProfit($departmentId, $dateStart, $dateEnd);
+							
+							
+							// Принято оплат
+							$paymentCount = 0;
+							if($userLeads->get()){
+								foreach($userLeads->get() as $leadItem){
+									$paymentCount += $leadItem->getPaymentCount();
+								}
+							}
+							
+							// Суммы фактически полученная
+							$profit = $user->getProfit($departmentId, $dateStart, $dateEnd);
                             $percentRevenue = 0;
                             if ( $user->revenue > 0 && $profit > 0 )
                             {
                                 $percentRevenue = ceil($profit / $user->revenue * 100);
                             }
-                            $newLead = \App\Lead::whereUserId($user->id)->filterDepartment($departmentId)->filterTeam($teamId)->where('created_at', '>=', $dateStart)->where('created_at', '<=', $dateEnd)->count();
-                            $plannedProfit = $user->getPlannedProfit($departmentId, $dateStart, $dateEnd);
-                            $profitManager = $user->getProfitManager($departmentId, $dateStart, $dateEnd);
-                            $deadlineTasks = \App\Task::whereUserId($user->id)->where('deadline', '>=', $dateStart)->where('deadline', '<=', $dateEnd)->where('updated_at', '<', DB::raw('`deadline`'))->count();
-                            $completedTask = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('completed', '=', 'yes')->count();
-                            $sumProfit += $profit;
-                            $sumNewLead += $newLead;
+							
+							//$deadlineTasks = \App\Task::whereUserId($user->id)->where('deadline', '>=', $dateStart)->where('deadline', '<=', $dateEnd)->where('updated_at', '<', DB::raw('`deadline`'))->count();
+                            //$completedTask = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('completed', '=', 'yes')->count();
+                            
+							$sumProfit += $profit;
+                            
                             $sumRevenue += $user->revenue;
                             $sumPlannedProfit += $plannedProfit;
-                            $sumProfitManager += $profitManager;
-                            $sumDeadlineTask += $deadlineTasks;
-                            $sumCompletedTask += $completedTask;
+                            //$sumProfitManager += $profitManager;
+							
+                            //$sumDeadlineTask += $deadlineTasks;
+                            //$sumCompletedTask += $completedTask;
+							
+							$sumAllTasks += $allTasks;
+							$sumAppointmentTasks += $appointmentTasks;
+							$sumRecallTasks += $recallTasks;
+							$sumCancelTasks += $cancelTasks;
+							$sumCourtHearingTasks += $courtHearingTasks;
+							$sumCompletedAppointmentTasks += $completedAppointmentTasks;
+							$sumNewLead += $newLead;
+							$sumPaymentCount += $paymentCount;
+							
 							if (($user->date !== NULL) && (strtotime($user->date) >= strtotime($dateStart)) && (strtotime($user->date) <= strtotime($dateEnd)))
 								$last_login = 'Да';
 							else
@@ -61,24 +123,25 @@
 						{{-- @if ($user->blocked !== 1) --}}
                         <tr @if($user->blocked == 1) style="display: none;" @endif>
                             <td><a href="{{route('users.view', ['userId' => $user->id])}}"> {{$user->name}}</a></td>
+							<td><b>{{$percentRevenue}}%</b> ({{$user->revenue}})</td>
 							<td>{{$last_login}}</td>
-                            <td>{{$newLead}}</td>
-                            <td>{{$profit}}</td>
-                            <td><b>{{$percentRevenue}}%</b> ({{$user->revenue}})</td>
-                            <td>{{$plannedProfit}}</td>
-                            <td>{{$profitManager}}</td>
-                            <td>{{$deadlineTasks}}</td>
-                            <td>{{$completedTask}}</td>
+							<td>{{$allTasks}}</td>
+							<td>{{$appointmentTasks}}</td>
+							<td>{{$recallTasks}}</td>
+							<td>{{$cancelTasks}}</td>
+							<td>{{$courtHearingTasks}}</td>
+							<td>{{$completedAppointmentTasks}}</td>
+							<td>{{$newLead}}</td>
+							<td>{{$paymentCount}}</td>
+							<td>{{$plannedProfit}}</td>
+							<td>{{$profit}}</td>
                         </tr>
 						{{-- @endif --}}
 
                     @endforeach
                     <tr style=" font-weight: bold;">
                         <td>Итог</td>
-						<td></td>
-                        <td>{{$sumNewLead}}</td>
-                        <td>{{$sumProfit}}</td>
-                        <?php
+						<?php
                             $sumPercentRevenue = 0;
                             if ( $sumRevenue > 0 && $sumProfit > 0 )
                             {
@@ -86,10 +149,17 @@
                             }
                         ?>
                         <td>{{$sumPercentRevenue}}% ({{$sumRevenue}})</td>
-                        <td>{{$sumPlannedProfit}}</td>
-                        <td>{{$sumProfitManager}}</td>
-                        <td>{{$sumDeadlineTask}}</td>
-                        <td>{{$sumCompletedTask}}</td>
+						<td></td>
+						<td>{{$sumAllTasks}}</td>
+						<td>{{$sumAppointmentTasks}}</td>
+						<td>{{$sumRecallTasks}}</td>
+						<td>{{$sumCancelTasks}}</td>
+						<td>{{$sumCourtHearingTasks}}</td>
+						<td>{{$sumCompletedAppointmentTasks}}</td>
+						<td>{{$sumNewLead}}</td>
+						<td>{{$sumPaymentCount}}</td>
+						<td>{{$sumPlannedProfit}}</td>
+						<td>{{$sumProfit}}</td>
                     </tr>
 
                     </tbody>

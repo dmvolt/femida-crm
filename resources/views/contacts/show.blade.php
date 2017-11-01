@@ -50,9 +50,80 @@
                         </div>
 
                         <div class="ibox border-bottom">
-                            <h2>
+							<h3>
+                                Информация о клиенте
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table">
+                                        <tr>
+                                            <td><strong>Дата рождения:</strong></td>
+                                            <td>{{$contact->data->contact_birth or null}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Место жительства(факт.):</strong></td>
+                                            <td>{{$contact->data->contact_address or null}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ИНН:</strong></td>
+                                            <td>{{$contact->data->contact_inn or null}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Сумма кредита:</strong></td>
+                                            <td>{{$contact->data->credit_sum or null}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Цель кредита:</strong></td>
+                                            <td>{{$contact->data->credit_target or null}}</td>
+                                        </tr>
+										
+										<tr>
+                                            <td><strong>Залог:</strong></td>
+                                            <td>
+											@if ($contact->data->is_pledge)
+												да
+											@else 
+												нет
+											@endif 
+											</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Поручитель:</strong></td>
+                                            <td>
+											@if ($contact->data->is_guarantor)
+												да
+											@else 
+												нет
+											@endif 
+											</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Справка о доходах:</strong></td>
+                                            <td>
+											@if ($contact->data->is_reference)
+												да
+											@else 
+												нет
+											@endif 
+											</td>
+                                        </tr>
+										<tr>
+                                            <td><strong>Открытые просрочки:</strong></td>
+                                            <td>
+											@if ($contact->data->is_delay)
+												да
+											@else 
+												нет
+											@endif 
+											</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+							
+                            <h3>
                                 Паспортные данные
-                            </h2>
+                            </h3>
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="table">

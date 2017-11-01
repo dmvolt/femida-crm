@@ -78,12 +78,10 @@ class Task extends Model
         'completed' => 'Выполнено',
     );
 
-
     public function identifiableName()
     {
         return $this->name;
     }
-
 
     public static $types = [
         'recall' => 'Звонок',
@@ -135,6 +133,11 @@ class Task extends Model
     public function leads()
     {
         return $this->belongsTo('App\Lead', 'lead_id');
+    }
+	
+	public function income()
+    {
+        return $this->belongsTo('App\Income', 'income_id');
     }
 
     public function getTypeNameAttribute()
@@ -309,5 +312,4 @@ class Task extends Model
     {
         return $this->completed == 'yes';
     }
-
 }

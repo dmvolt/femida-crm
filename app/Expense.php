@@ -35,6 +35,11 @@ class Expense extends Model
     {
         return $this->belongsTo('App\User', 'user_id');
     }
+	
+	public function cost()
+    {
+        return $this->belongsTo('App\Cost', 'cost_id');
+    }
 
     public function department()
     {

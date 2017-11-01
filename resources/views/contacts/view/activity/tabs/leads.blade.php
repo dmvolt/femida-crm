@@ -25,6 +25,15 @@
                         <label class=" control-label">Сумма</label>
                         <input class="form-control payment-price-input form-control" type="text" id="price" name="price" value="">
                     </div>
+					
+					<div class="form-group" style="">
+                        <label class=" control-label">Тип оплаты</label>
+                        <select class="form-control payment-income-id-input form-control" id="income_id" name="income_id">
+							@foreach(\App\Income::all() as $_income)
+								<option value="{{$_income->id}}">{{$_income->name}}</option>
+							@endforeach
+						</select>
+                    </div>
 
                     <div class="form-group" style="">
                         <button class="btn btn-primary m button-save-payment"> сохранить</button>

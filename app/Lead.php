@@ -223,6 +223,11 @@ class Lead extends Model
     {
         return $this->tasks()->whereType('approved_payment')->whereCompleted('yes')->sum('cost');
     }
+	
+	public function getPaymentCount()
+    {
+        return $this->tasks()->whereType('approved_payment')->whereCompleted('yes')->count();
+    }
 
     public function contact()
     {

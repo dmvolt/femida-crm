@@ -11,6 +11,8 @@
                 <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="true">Отделы</a></li>
                 <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="true">Статусы</a></li>
                 <li class=""><a data-toggle="tab" href="#tab-6" aria-expanded="true">Источники</a></li>
+				<li class=""><a data-toggle="tab" href="#tab-7" aria-expanded="true">Расходы</a></li>
+				<li class=""><a data-toggle="tab" href="#tab-8" aria-expanded="true">Доходы</a></li>
             @endif
 
         </ul>
@@ -44,6 +46,16 @@
             <div id="tab-6" class="tab-pane">
                 <div class="panel-body">
                     {!! $origins !!}
+                </div>
+            </div>
+			<div id="tab-7" class="tab-pane">
+                <div class="panel-body">
+                    {!! $costs !!}
+                </div>
+            </div>
+			<div id="tab-8" class="tab-pane">
+                <div class="panel-body">
+                    {!! $incomes !!}
                 </div>
             </div>
         </div>
