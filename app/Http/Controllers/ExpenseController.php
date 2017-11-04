@@ -7,6 +7,7 @@ use App\Expense;
 use App\Cost;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
 use Input;
@@ -91,7 +92,7 @@ class ExpenseController extends Controller
 		{
 			$store->add('department_id','Филиал', 'select')->options([\Auth::user()->department_id => Department::findOrFail(\Auth::user()->department_id)->name])->attributes(['readonly' => '']);
 		} else {
-			$store->add('department_id','Филиал', 'select')->options(Department::all()->pluck('name', 'id'));
+			$store->add('department_id','Филиал', 'select')->options(DB::table('departments')->orderBy('id','desc')->pluck('name', 'id'));
 		}
 		
 
