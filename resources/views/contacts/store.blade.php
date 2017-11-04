@@ -66,7 +66,7 @@
 							<div class="row">
                                 <div class="col-md-5 col-md-offset-1" style="">
                                     <div class="form-group clearfix">
-                                        {!! $store->render('data.contact_birth') !!}
+                                        {!! $store->render('data.contact_birth', ['class' => 'birth-date']) !!}
                                     </div>
 									<div class="form-group clearfix">
                                         {!! $store->render('data.contact_address') !!}

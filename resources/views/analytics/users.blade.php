@@ -5,22 +5,22 @@
         <div class="panel panel-default">
             <div class="panel-body" style="width: 100%; margin-left:0;">
 			
-				<table class="table table-hover">
+				<table id="user_table" class="table table-hover tablesorter">
                     <thead>
                     <tr>
-                        <th>ФИО</th>
-						<th>План</th>
-						<th>Логин</th>
-						<th>Взятых заявок</th>
-						<th>Назначено встреч</th>
-						<th>Назначено звонок</th>
-						<th>Брак</th>
-						<th>Судебное заседание</th>
-						<th>Проведено встреч</th>
-						<th>Новых договоров</th>
-						<th>Принято оплат</th>
-						<th>Планируется доплат на сумму</th>
-						<th>Сумма фактически полученная</th>
+                        <th>ФИО <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>План<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Логин<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Взятых заявок<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Назначено встреч<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Назначено звонок<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Брак<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Судебное заседание<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Проведено встреч<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Новых договоров<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Принято оплат<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Планируется доплат на сумму<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
+						<th>Сумма фактически полученная<br><span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up"></span></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -139,31 +139,34 @@
 						{{-- @endif --}}
 
                     @endforeach
-                    <tr style=" font-weight: bold;">
-                        <td>Итог</td>
-						<?php
-                            $sumPercentRevenue = 0;
-                            if ( $sumRevenue > 0 && $sumProfit > 0 )
-                            {
-                                $sumPercentRevenue = ceil($sumProfit / $sumRevenue * 100);
-                            }
-                        ?>
-                        <td>{{$sumPercentRevenue}}% ({{$sumRevenue}})</td>
-						<td></td>
-						<td>{{$sumAllTasks}}</td>
-						<td>{{$sumAppointmentTasks}}</td>
-						<td>{{$sumRecallTasks}}</td>
-						<td>{{$sumCancelTasks}}</td>
-						<td>{{$sumCourtHearingTasks}}</td>
-						<td>{{$sumCompletedAppointmentTasks}}</td>
-						<td>{{$sumNewLead}}</td>
-						<td>{{$sumPaymentCount}}</td>
-						<td>{{$sumPlannedProfit}}</td>
-						<td>{{$sumProfit}}</td>
-                    </tr>
-
                     </tbody>
                 </table>
+				<table class="table table-hover">
+					<tbody>
+						<tr style=" font-weight: bold;">
+							<td>Итог</td>
+							<?php
+								$sumPercentRevenue = 0;
+								if ( $sumRevenue > 0 && $sumProfit > 0 )
+								{
+									$sumPercentRevenue = ceil($sumProfit / $sumRevenue * 100);
+								}
+							?>
+							<td>{{$sumPercentRevenue}}% ({{$sumRevenue}})</td>
+							<td></td>
+							<td>{{$sumAllTasks}}</td>
+							<td>{{$sumAppointmentTasks}}</td>
+							<td>{{$sumRecallTasks}}</td>
+							<td>{{$sumCancelTasks}}</td>
+							<td>{{$sumCourtHearingTasks}}</td>
+							<td>{{$sumCompletedAppointmentTasks}}</td>
+							<td>{{$sumNewLead}}</td>
+							<td>{{$sumPaymentCount}}</td>
+							<td>{{$sumPlannedProfit}}</td>
+							<td>{{$sumProfit}}</td>
+						</tr>
+					</tbody>
+				</table>
             </div>
         </div>
     </div>

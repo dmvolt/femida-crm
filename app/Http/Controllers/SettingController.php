@@ -400,7 +400,7 @@ class SettingController extends Controller
         $grid->add('id','ID', true)->style("width:100px");
 		
 		$grid->add('color','Цвет')->cell( function($value, $row) {
-			return '<span class="badge" style="background:'.$value.';color:#fff;">Цвет</span>'; //Cost::$colorNames[$value]
+			return '<span class="badge" style="background:'.$value.';color:#fff;">'.Cost::$colorNames[$value].'</span>'; //Cost::$colorNames[$value]
 		});
 		
 		$grid->add('type','Группа')->cell( function($value, $row) {
@@ -427,7 +427,7 @@ class SettingController extends Controller
         $grid->add('id','ID', true)->style("width:100px");
 		
 		$grid->add('color','Цвет')->cell( function($value, $row) {
-			return '<span class="badge" style="background:'.$value.';color:#fff;">Цвет</span>'; //Income::$colorNames[$value]
+			return '<span class="badge" style="background:'.$value.';color:#fff;">'.Cost::$colorNames[$value].'</span>'; //Income::$colorNames[$value]
 		});
 		
         $grid->add('name','Название');

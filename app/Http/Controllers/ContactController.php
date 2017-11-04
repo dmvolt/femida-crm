@@ -153,7 +153,7 @@ class ContactController extends Controller
 		$store->checkbox('data.is_guarantor', 'Поручитель');
 		$store->checkbox('data.is_reference', 'Справка о доходах');
 		$store->checkbox('data.is_delay', 'Открытые просрочки');
-		$store->add('data.contact_birth', 'Дата рождения', 'date');
+		$store->add('data.contact_birth', 'Дата рождения', 'text');
 		$store->add('data.contact_address', 'Место жительства(факт.)', 'text');
 		$store->add('data.contact_inn', 'ИНН', 'text');
 
@@ -373,7 +373,7 @@ class ContactController extends Controller
         $content = '';
         foreach ($payments as $_payment)
         {
-            $content .= view('contacts.lead.payment', ['_payment' => $_payment->with('income'), 'leadId' => $leadId, '_lead' => $lead])->render();
+            $content .= view('contacts.lead.payment', ['_payment' => $_payment, 'leadId' => $leadId, '_lead' => $lead])->render();
         }
 
         return $content;

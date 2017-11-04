@@ -66,12 +66,23 @@ class AnalyticsController extends Controller
             $dateStart = Carbon::now()->subDays(30);
         }
 		
-		$costs = Cost::all();
+		$allCosts = [];
+		
+		foreach(Cost::$typeNames as $typeId => $typeName){
+			$allCosts[$typeId] = Cost::where('type', '=', $typeId)->get();
+		}
+		
 		$incomes = Income::all();
 
-        $generalChart = [];
+        $generalChartAll = [];
+		$generalChartIncome = [];
+		$generalChartCost = [];
+		
 		$expenses_arr = [];
 		$profit_arr = [];
+		
+		$profit_all = 0;
+		$expenses_all = 0;
 		
         $charDate = $dateStart->copy();
         for( $i =0; $i <= $dateEnd->diffInMonths($dateStart); $i++)
@@ -84,19 +95,29 @@ class AnalyticsController extends Controller
 			} else {
 				$end = $charDate->addDays($dateEnd->diffInDays($charDate));
 			}
-			
-			if($costs){
-				foreach($costs as $cost){
-					$expenses = Expense::where('updated_at', '>=', $start)
-					->where('updated_at', '<=', $end)
-					->where('cost_id', '=', $cost->id);
-
-					if($departmentId)
-					{
-						$expenses->whereDepartmentId($departmentId);
-					}
+			 
+			if(!empty($allCosts)){
+				foreach($allCosts as $costType => $costs){
 					
-					$expenses_arr['c'.$cost->id] = $expenses->sum('sum');
+					if($costs){
+						
+						$expenses_sum = 0;
+						
+						foreach($costs as $cost){
+							$expenses = Expense::where('updated_at', '>=', $start)
+							->where('updated_at', '<=', $end)
+							->where('cost_id', '=', $cost->id);
+
+							if($departmentId)
+							{
+								$expenses->whereDepartmentId($departmentId);
+							}
+							
+							$expenses_sum += $expenses->sum('sum');
+							$expenses_all += $expenses->sum('sum');
+						}
+						$expenses_arr['c'.$costType] = $expenses_sum;
+					}
 				}
 			}
 
@@ -142,61 +163,103 @@ class AnalyticsController extends Controller
 
 					//$expenses = $expenses->sum('sum');
 					$profit_arr['i'.$income->id] = $profit->sum('cost');
+					$profit_all += $profit->sum('cost');
 				}
 			}
+			
+			$generalChartAll[] = [
+				'y' => $name,
+				'a' => $profit_all,
+				'b' => $expenses_all,
+			];
 			
 			$array1 = [
 				'y' => $name,
 			];
 			
-			$generalChart[] = $array1 + $profit_arr + $expenses_arr;
+			$generalChartIncome[] = $array1 + $profit_arr;
+			
+			$generalChartCost[] = $array1 + $expenses_arr;
         }
 		
-		$chartKeys = "[";
-		$chartLabels = "[";
-		$chartColors = "[";
-		$is_incomes = false;
+		$chartKeysAll = "['a', 'b']";
+		$chartLabelsAll = "['Доходы', 'Расходы']";
+		$chartColorsAll = "['#28a745', '#dc3545']";
+		
+		$chartKeysIncome = "[";
+		$chartLabelsIncome = "[";
+		$chartColorsIncome = "[";
+		
+		$chartKeysCost = "[";
+		$chartLabelsCost = "[";
+		$chartColorsCost = "[";
 		
 		if($incomes){
 			foreach($incomes as $key => $income){
 				if($key){
-					$chartKeys .= ", 'i".$income->id."'";
-					$chartLabels .= ", 'Доходы ".$income->name."'";
-					$chartColors .= ", '".$income->color."'";
+					$chartKeysIncome .= ", 'i".$income->id."'";
+					$chartLabelsIncome .= ", 'Доходы ".$income->name."'";
+					$chartColorsIncome .= ", '".$income->color."'";
 				} else {
-					$chartKeys .= "'i".$income->id."'";
-					$chartLabels .= "'Доходы ".$income->name."'";
-					$chartColors .= "'".$income->color."'";
-				}
-			}
-			$is_incomes = true;
-		}
-		
-		if($costs){
-			foreach($costs as $key => $cost){
-				if($is_incomes){
-					$chartKeys .= ", 'c".$cost->id."'";
-					$chartLabels .= ", 'Расходы ".$cost->name."'";
-					$chartColors .= ", '".$cost->color."'";
-				} else {
-					if($key){
-						$chartKeys .= ", 'c".$cost->id."'";
-						$chartLabels .= ", 'Расходы ".$cost->name."'";
-						$chartColors .= ", '".$cost->color."'";
-					} else {
-						$chartKeys .= "'c".$cost->id."'";
-						$chartLabels .= "'Расходы ".$cost->name."'";
-						$chartColors .= "'".$cost->color."'";
-					}
+					$chartKeysIncome .= "'i".$income->id."'";
+					$chartLabelsIncome .= "'Доходы ".$income->name."'";
+					$chartColorsIncome .= "'".$income->color."'";
 				}
 			}
 		}
 		
-		$chartKeys .= "]";
-		$chartLabels .= "]";
-		$chartColors .= "]";
+		if(!empty($allCosts)){
+			foreach(Cost::$typeNames as $typeId => $typeName){
+				
+				$costColor = (!empty($expenses_arr) && $expenses_arr['c'.$typeId] != 0) ? $allCosts[$typeId][0]->color : '#ccc';
+				
+				if($typeId != 'reklama'){
+					$chartKeysCost .= ", 'c".$typeId."'";
+					$chartLabelsCost .= ", 'Расходы ".$typeName."'";
+					$chartColorsCost .= ", '".$costColor."'";
+				} else {
+					$chartKeysCost .= "'c".$typeId."'";
+					$chartLabelsCost .= "'Расходы ".$typeName."'";
+					$chartColorsCost .= "'".$costColor."'";
+				}
+			}
+		}
+		
+		$chartKeysIncome .= "]";
+		$chartLabelsIncome .= "]";
+		$chartColorsIncome .= "]";
+		
+		$chartKeysCost .= "]";
+		$chartLabelsCost .= "]";
+		$chartColorsCost .= "]";
 
-        $generalChart = collect($generalChart)->toJson();
-        return view('analytics', compact('dateEnd', 'dateStart', 'departmentId', 'generalChart', 'chartKeys', 'chartLabels', 'chartColors', 'teamId', 'canChangeTeam', 'canChangeDepartment'));
+        $generalChartAll = collect($generalChartAll)->toJson();
+		$generalChartCost = collect($generalChartCost)->toJson();
+		$generalChartIncome = collect($generalChartIncome)->toJson();
+		
+        return view('analytics', compact(
+			'dateEnd', 
+			'dateStart', 
+			'departmentId',
+			
+			'generalChartAll', 
+			'chartKeysAll', 
+			'chartLabelsAll', 
+			'chartColorsAll',
+			
+			'generalChartCost', 
+			'chartKeysCost', 
+			'chartLabelsCost', 
+			'chartColorsCost',
+			
+			'generalChartIncome', 
+			'chartKeysIncome', 
+			'chartLabelsIncome', 
+			'chartColorsIncome',
+			
+			'teamId', 
+			'canChangeTeam', 
+			'canChangeDepartment'
+		));
     }
 }

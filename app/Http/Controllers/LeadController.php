@@ -92,7 +92,7 @@ class LeadController extends Controller
         $leadsTable->attributes(["class"=>"table table-striped table-hover"]);
 		
         $leadsTable->add('name','Название')->style("width:100px");
-        $leadsTable->add('{{$user->name or null}}', 'Ответственный');
+		$leadsTable->add('{{$user->name or null}}', 'Ответственный');
         $leadsTable->add('{{$contact->name or null}}', 'Контакт');
 		$leadsTable->add('{{$department->city or null}}', 'Город');
         $leadsTable->add('{{$service->name or null}}', 'Услуга');
@@ -100,7 +100,7 @@ class LeadController extends Controller
         $leadsTable->add('{{$status->name}}', 'Статус');
         $leadsTable->add('updated_at', 'Обновлено', true);
 
-        $leadsTable->orderBy('id','desc');
+        $leadsTable->orderBy('id', 'desc');
         $leadsTable->paginate(15);
 
         if ( Auth::user()->isAdmin() )

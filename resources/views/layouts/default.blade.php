@@ -145,7 +145,8 @@
 <script src="/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script src="/js/plugins/jsTree/jstree.min.js"></script>
 
-<script src="/js/plugins/maskedinput/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/js/plugins/inputmask/jquery.inputmask.bundle.js" type="text/javascript"></script>
+<script src="/js/jquery.tablesorter.js"></script>
 
 {!! Rapyd::scripts() !!}
 
@@ -180,6 +181,22 @@
         todayBtn: 'linked',
         autoclose: true
     });
+	
+	// Маска для ввода суммы
+	$('.sum').on('input', function () {
+		var fieldText = this.value.replace(/\D/g, '');
+		var bufer = '';
+
+		if (fieldText.length > 3) {
+			while (fieldText.length > 3) {
+				var tail = fieldText.substr(fieldText.length - 3, fieldText.length);
+				fieldText = fieldText.substr(0, fieldText.length - 3);
+				bufer = ' ' + tail + bufer;
+			}
+		}
+
+		this.value = fieldText + bufer;
+	});
 
     $(document).ready(function ()
     {
@@ -201,11 +218,16 @@
             'escapeHtml': true,
         };
 		
-		$(".phone").mask("+7(999) 999-9999");
-		$(".sum").mask("99000");
-		$(".inn").mask("9999999999");
-		$(".passport-num").mask("9999 999999");
-		$(".passport-code").mask("999-999");
+		// Input masks
+		$(".phone").inputmask("+7(999) 999-9999");
+		$(".birth-date").inputmask("99-99-9999");
+		//$(".sum").inputmask({mask: "(9 999)|(99 999)|(999 999)", greedy: false});
+		$(".inn").inputmask("9999999999");
+		$(".passport-num").inputmask("9999 999999");
+		$(".passport-code").inputmask("999-999");
+		
+		// Sorts table
+		$('#user_table').tablesorter(); 
 	
         <?php
             foreach ($user->unreadNotifications as $notification)

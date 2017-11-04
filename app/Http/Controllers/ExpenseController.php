@@ -84,7 +84,7 @@ class ExpenseController extends Controller
 		
 		$store->add('cost_id', 'Статья расходов', 'select')->options(Cost::allForSelect());
 		
-        $store->add('name', 'Коментарий', 'text')->rule('required|min:2');
+        $store->add('name', 'Коментарий', 'text')->rule('min:2');
         $store->add('sum', 'Сумма', 'number')->rule('required|min:2');
         $store->add('file', 'Файл', 'file')->move('uploads/');
 		if (! \Auth::user()->isAdmin()) 

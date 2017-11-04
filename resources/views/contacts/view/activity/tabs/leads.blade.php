@@ -28,7 +28,7 @@
 					
 					<div class="form-group" style="">
                         <label class=" control-label">Тип оплаты</label>
-                        <select class="form-control payment-income-id-input form-control" id="income_id" name="income_id">
+                        <select class="form-control payment-income-id-select form-control" id="income_id" name="income_id">
 							@foreach(\App\Income::all() as $_income)
 								<option value="{{$_income->id}}">{{$_income->name}}</option>
 							@endforeach
@@ -142,37 +142,40 @@
     });
 
     lead_list.on('click', '.payment-check', function () {
+		if(confirm('Вы уверены в своем действии?')){
+			var button = $(this);
 
-        var button = $(this);
-
-        $.ajax({
-            type: "POST",
-            url: button.attr('data-action'),
-            data: {_token: window.Laravel.csrfToken},
-            success: function (content)
-            {
-                button.parent().find('button').each(function () {
-                    $(this).attr('disabled', 'disabled');
-                });
-            },
-        });
+			$.ajax({
+				type: "POST",
+				url: button.attr('data-action'),
+				data: {_token: window.Laravel.csrfToken},
+				success: function (content)
+				{
+					button.parent().find('button').each(function () {
+						$(this).attr('disabled', 'disabled');
+					});
+				},
+			});
+		}
     });
 
     lead_list.on('click', '.payment-remove', function () {
 
-        var button = $(this);
+		if(confirm('Вы уверены в своем действии?')){
+			var button = $(this);
 
-        $.ajax({
-            type: "POST",
-            url: button.attr('data-action'),
-            data: {_token: window.Laravel.csrfToken},
-            success: function (content)
-            {
-               button.parent().find('button').each(function () {
-                    button.closest('tr').remove();
-                });
-            },
-        });
+			$.ajax({
+				type: "POST",
+				url: button.attr('data-action'),
+				data: {_token: window.Laravel.csrfToken},
+				success: function (content)
+				{
+				   button.parent().find('button').each(function () {
+						button.closest('tr').remove();
+					});
+				},
+			});
+		}
     });
 
     lead_list.on('click', '.payment-edit,.payment-add-btn', function () {
@@ -186,12 +189,20 @@
         {
             var cost = tr.find('.cost-td').text();
             var deadline = tr.find('.deadline-td').text();
-
+			var incomeType = tr.find('.income-td').text();
 
             payment.find('.payment-id-input').val(tr.attr('data-payment-id'));
             payment.find('.lead-id-input').val(tr.attr('data-lead-id'));
             payment.find('.payment-date-input').val(deadline);
             payment.find('.payment-price-input').val(cost);
+			
+			var incomeSelect = payment.find('#income_id option');
+			
+			for(var j = 0; j < incomeSelect.length; j++){   
+				if(incomeSelect.eq(j).text() == incomeType){
+					incomeSelect.eq(j).prop("selected", true);   
+				}
+			}
         }
         else
         {

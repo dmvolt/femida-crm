@@ -8235,5 +8235,12 @@ body.md-skin {
 .form-check input.checkbox {
 	float:left;
 	margin-right: 15px;
-	top: -3px;
+}
+
+.tablesorter th{
+	cursor:pointer;
+}
+
+.tablesorter th .glyphicon{
+	font-size: 10px;
 }

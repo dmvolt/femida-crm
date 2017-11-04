@@ -14,7 +14,7 @@ class AddFieldsToContactDataTable extends Migration
     public function up()
     {
         Schema::table('contact_data', function (Blueprint $table) {
-            $table->integer('credit_sum');
+            $table->string('credit_sum');
 			$table->string('credit_target');
 			$table->integer('is_pledge');
 			$table->integer('is_guarantor');

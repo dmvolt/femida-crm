@@ -43,26 +43,66 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                Статистика расходов и доходов
+                Статистика расходов и доходов (общая)
             </div>
             <div class="panel-body" style="width: 100%; margin-left: 0;">
-                <div id="morris-bar-chart"></div>
+                <div id="morris-bar-chart-all"></div>
+            </div>
+        </div>
+		
+		<div class="panel panel-default">
+            <div class="panel-heading">
+                Статистика расходов
+            </div>
+            <div class="panel-body" style="width: 100%; margin-left: 0;">
+                <div id="morris-bar-chart-cost"></div>
+            </div>
+        </div>
+		
+		<div class="panel panel-default">
+            <div class="panel-heading">
+                Статистика доходов
+            </div>
+            <div class="panel-body" style="width: 100%; margin-left: 0;">
+                <div id="morris-bar-chart-income"></div>
 
                 <script type="text/javascript">
                     $(document).ready(function () {
-                        Morris.Bar({
-                            element: 'morris-bar-chart',
-                            data: {!! $generalChart !!},
+						
+						Morris.Bar({
+                            element: 'morris-bar-chart-all',
+                            data: {!! $generalChartAll !!},
                             xkey: 'y',
-                            ykeys: {!! $chartKeys !!},
-                            labels: {!! $chartLabels !!},
+                            ykeys: {!! $chartKeysAll !!},
+                            labels: {!! $chartLabelsAll !!},
                             hideHover: 'auto',
                             resize: true,
-                            barColors: {!! $chartColors !!}
+                            barColors: {!! $chartColorsAll !!}
+                        });
+						
+						Morris.Bar({
+                            element: 'morris-bar-chart-cost',
+                            data: {!! $generalChartCost !!},
+                            xkey: 'y',
+                            ykeys: {!! $chartKeysCost !!},
+                            labels: {!! $chartLabelsCost !!},
+                            hideHover: 'auto',
+                            resize: true,
+                            barColors: {!! $chartColorsCost !!}
+                        });
+						
+                        Morris.Bar({
+                            element: 'morris-bar-chart-income',
+                            data: {!! $generalChartIncome !!},
+                            xkey: 'y',
+                            ykeys: {!! $chartKeysIncome !!},
+                            labels: {!! $chartLabelsIncome !!},
+                            hideHover: 'auto',
+                            resize: true,
+                            barColors: {!! $chartColorsIncome !!}
                         });
                     });
                 </script>
-
             </div>
         </div>
     </div>

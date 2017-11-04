@@ -1,10 +1,10 @@
 <tr data-payment-id="{{$_payment->id}}" data-lead-id="{{$leadId}}" id="payment-{{$_payment->id}}">
     <td class="deadline-td">{{$_payment->deadline}}</td>
 	<td class="cost-td">{{$_payment->cost}}</td>
-    <td class="cost-td">{{$_payment->income ? $_payment->income->name : ''}}</td>
+    <td class="income-td">{{$_payment->income ? $_payment->income->name : ''}}</td>
 
     @can('update', $_lead)
-        @if ( $_payment->isCompleted() )
+        @if ($_payment->isCompleted())
             <td>
                 <span class="" style="color: #1ab394;">Оплачено</span>
             </td>
