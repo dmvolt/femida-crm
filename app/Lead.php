@@ -210,6 +210,8 @@ class Lead extends Model
             $task->lead_id = $this->id;
             $task->user_id = $this->user_id;
             $task->contact_id = $this->contact_id;
+			$task->department_id = $this->department_id;
+			$task->income_id = 0;
             $task->author_id = $this->user_id;
             $task->cost = $payment->cost;
 
