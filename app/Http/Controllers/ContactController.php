@@ -241,12 +241,18 @@ class ContactController extends Controller
         return view('contacts.task.view', ['task' => $task]);
     }
 
-    public function taskCompleted($id)
+    public function taskCompleted($id = null)
     {
-        $task = Task::findOrFail($id);
-        $task->completed = 'yes';
+		if($id){
+			$task = Task::findOrFail($id);
+			$task->completed = 'yes';
+		} else {
+			$id = Input::get('task_id');
+			$task = Task::findOrFail($id);
+			$task->completed = 'yes';
+			$task->income_id = Input::get('income_id');
+		}
         $task->save();
-
         return view('contacts.task.view', ['task' => $task]);
     }
 
@@ -363,7 +369,7 @@ class ContactController extends Controller
 
 
         $payment->cost = Input::get('price');
-		$payment->income_id = Input::get('income_id');
+		$payment->income_id = 0;
         $payment->deadline = Carbon::parse(Input::get('payment-date'))->format('Y-m-d H:i');
 
         $payment->save();

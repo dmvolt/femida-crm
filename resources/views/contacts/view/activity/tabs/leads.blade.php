@@ -25,15 +25,6 @@
                         <label class=" control-label">Сумма</label>
                         <input class="form-control payment-price-input form-control" type="text" id="price" name="price" value="">
                     </div>
-					
-					<div class="form-group" style="">
-                        <label class=" control-label">Тип оплаты</label>
-                        <select class="form-control payment-income-id-select form-control" id="income_id" name="income_id">
-							@foreach(\App\Income::all() as $_income)
-								<option value="{{$_income->id}}">{{$_income->name}}</option>
-							@endforeach
-						</select>
-                    </div>
 
                     <div class="form-group" style="">
                         <button class="btn btn-primary m button-save-payment"> сохранить</button>
@@ -43,6 +34,7 @@
             </div>
         </div>
     </div>
+	
     <div id="lead-add" style="display: none;">
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -141,7 +133,7 @@
         });
     });
 
-    lead_list.on('click', '.payment-check', function () {
+    /* lead_list.on('click', '.payment-check', function () {
 		if(confirm('Вы уверены в своем действии?')){
 			var button = $(this);
 
@@ -157,7 +149,7 @@
 				},
 			});
 		}
-    });
+    }); */
 
     lead_list.on('click', '.payment-remove', function () {
 
@@ -189,20 +181,20 @@
         {
             var cost = tr.find('.cost-td').text();
             var deadline = tr.find('.deadline-td').text();
-			var incomeType = tr.find('.income-td').text();
+			//var incomeType = tr.find('.income-td').text();
 
             payment.find('.payment-id-input').val(tr.attr('data-payment-id'));
             payment.find('.lead-id-input').val(tr.attr('data-lead-id'));
             payment.find('.payment-date-input').val(deadline);
             payment.find('.payment-price-input').val(cost);
 			
-			var incomeSelect = payment.find('#income_id option');
+			/* var incomeSelect = payment.find('#income_id option');
 			
 			for(var j = 0; j < incomeSelect.length; j++){   
 				if(incomeSelect.eq(j).text() == incomeType){
 					incomeSelect.eq(j).prop("selected", true);   
 				}
-			}
+			} */
         }
         else
         {
