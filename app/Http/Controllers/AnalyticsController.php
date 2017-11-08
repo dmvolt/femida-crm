@@ -105,8 +105,8 @@ class AnalyticsController extends Controller
 						$expenses_sum = 0;
 						
 						foreach($costs as $cost){
-							$expenses = Expense::where('updated_at', '>=', $start)
-							->where('updated_at', '<=', $end)
+							$expenses = Expense::where('updated_at', '>=', $dateStart)
+							->where('updated_at', '<=', $dateEnd)
 							->where('cost_id', '=', $cost->id);
 
 							if($departmentId)
@@ -124,8 +124,8 @@ class AnalyticsController extends Controller
 
 			if($incomes){
 				foreach($incomes as $income){
-					$profit = Task::withPayments()->where('updated_at', '>=', $start)
-					->where('updated_at', '<=', $end)
+					$profit = Task::withPayments()->where('updated_at', '>=', $dateStart)
+					->where('updated_at', '<=', $dateEnd)
 					->where('income_id', '=', $income->id)
 					->where('completed', '=', 'yes');
 
