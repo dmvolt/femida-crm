@@ -212,6 +212,7 @@ class ContactController extends Controller
         $task->deadline = Carbon::parse($deadline)->format('Y-m-d H:i');
 
         $task->user_id = Auth::user()->id;
+		$task->income_id = 0;
         $task->author_id = Auth::user()->id;
         $task->contact_id = $contact->id;
 		if ($department)

@@ -80,7 +80,7 @@
 										<tr>
                                             <td><strong>Залог:</strong></td>
                                             <td>
-											@if ($contact->data->is_pledge)
+											@if (isset($contact->data) && $contact->data->is_pledge)
 												да
 											@else 
 												нет
@@ -90,7 +90,7 @@
                                         <tr>
                                             <td><strong>Поручитель:</strong></td>
                                             <td>
-											@if ($contact->data->is_guarantor)
+											@if (isset($contact->data) && $contact->data->is_guarantor)
 												да
 											@else 
 												нет
@@ -100,7 +100,7 @@
                                         <tr>
                                             <td><strong>Справка о доходах:</strong></td>
                                             <td>
-											@if ($contact->data->is_reference)
+											@if (isset($contact->data) && $contact->data->is_reference)
 												да
 											@else 
 												нет
@@ -110,7 +110,7 @@
 										<tr>
                                             <td><strong>Открытые просрочки:</strong></td>
                                             <td>
-											@if ($contact->data->is_delay)
+											@if (isset($contact->data) && $contact->data->is_delay)
 												да
 											@else 
 												нет

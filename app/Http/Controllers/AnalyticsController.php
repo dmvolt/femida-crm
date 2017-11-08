@@ -85,11 +85,12 @@ class AnalyticsController extends Controller
 		$expenses_all = 0;
 		
         $charDate = $dateStart->copy();
-        for( $i =0; $i <= $dateEnd->diffInMonths($dateStart); $i++)
-        {
-            $name = $charDate->format('F');
+		
+		for( $i =0; $i <= $dateEnd->diffInMonths($dateStart); $i++)
+		{
+			$name = $charDate->format('F');
 
-            $start = $charDate->toDateTimeString();
+			$start = $charDate->toDateTimeString();
 			if ($dateEnd->diffInMonths($charDate) > 0) {
 				$end = $charDate->addMonth()->toDateTimeString();
 			} else {
@@ -121,7 +122,7 @@ class AnalyticsController extends Controller
 				}
 			}
 
-            if($incomes){
+			if($incomes){
 				foreach($incomes as $income){
 					$profit = Task::withPayments()->where('updated_at', '>=', $start)
 					->where('updated_at', '<=', $end)
@@ -180,7 +181,7 @@ class AnalyticsController extends Controller
 			$generalChartIncome[] = $array1 + $profit_arr;
 			
 			$generalChartCost[] = $array1 + $expenses_arr;
-        }
+		}
 		
 		$chartKeysAll = "['a', 'b']";
 		$chartLabelsAll = "['Доходы', 'Расходы']";
