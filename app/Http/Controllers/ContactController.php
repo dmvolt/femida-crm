@@ -233,12 +233,33 @@ class ContactController extends Controller
 					'text' => $text
 				];
 				
-				$contact->notify(new MessageNotification($message));
+				//$contact->notify(new MessageNotification($message));
 				
             }
         }
 
 
+        return view('contacts.task.view', ['task' => $task]);
+    }
+	
+	public function taskAppointmentCompleted()
+    {
+		$id = Input::get('task_id');
+		$complete_status = Input::get('complete_status');
+		
+		$task = Task::findOrFail($id);
+		
+		if($complete_status == 'complete'){
+			$task->completed = 'yes';
+		}
+		elseif($complete_status == 'canceled'){
+			$task->completed = 'canceled';
+		}
+		
+		$task->income_id = 0;
+			
+        $task->save();
+		
         return view('contacts.task.view', ['task' => $task]);
     }
 

@@ -140,9 +140,7 @@
 
                     @endforeach
                     </tbody>
-                </table>
-				<table class="table table-hover">
-					<tbody>
+					<tfoot>
 						<tr style=" font-weight: bold;">
 							<td>Итог</td>
 							<?php
@@ -165,7 +163,7 @@
 							<td>{{$sumPlannedProfit}}</td>
 							<td>{{$sumProfit}}</td>
 						</tr>
-					</tbody>
+					</tfoot>
 				</table>
             </div>
         </div>
