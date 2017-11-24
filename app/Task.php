@@ -100,10 +100,17 @@ class Task extends Model
         'cancel' => 'Брак',
     ];
 
+	// Выборка одного user к данной task
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id');
     }
+	
+	// Выборка множества user к данной task
+	/* public function users()
+    {
+		return $this->belongsToMany('App\User', 'tasks_users');
+    } */
 
     public function notifications()
     {

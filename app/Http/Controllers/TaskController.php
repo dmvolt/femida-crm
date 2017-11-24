@@ -147,7 +147,7 @@ class TaskController extends Controller
         $tasks->row(function ($row) {
             $name = $row->cell('clientName')->value;
             $row->cell('clientName')->value('<a class="client-link" href="#" data-id="'.$row->data->contact_id.'" >'.$name.'<a/>');
-            $row->cell('clientName')->attributes(['class' => 'issue-info']);
+            //$row->cell('clientName')->attributes(['class' => 'issue-info']);
 			if($row->data->contact) {
 				$row->cell('lastcomment')->value = mb_substr($row->data->contact->lastactivity(), 0, 20).((strlen($row->data->contact->lastactivity()) > 20) ? "..." : "");
 				$row->cell('lastcomment')->attributes(["title" => $row->data->contact->lastactivity()]);

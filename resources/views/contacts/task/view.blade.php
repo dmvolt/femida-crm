@@ -1,33 +1,43 @@
 @can('show', $task)
-    <tr class="task-item" id="task_item_{{$task->id}}">
-        @if ( $task->completed == 'no' )
-            <td>
-                @can('update', $task)
-                    <div class="checkbox m-r-xs">
-                        <label>
-							@if ( $task->type == 'appointment' )
-								<input type="checkbox" id="task-appointment-check-{{$task->id}}" class="task-appointment-completed">
-							@else
-								<input type="checkbox" class="task-completed" data-action="{{route('contacts.taskCompleted', ['taskId' => $task->id])}}">
+	<tr class="task-item" id="task_item_{{$task->id}}">
+		@if ( $task->completed == 'no' )
+			<td>
+				@can('update', $task)
+					<div class="checkbox m-r-xs">
+						<label>
+							@if ( \Auth::user()->isAdmin() || $task->user_id == $user_id )
+								@if ( $task->type == 'appointment' )
+									<input type="checkbox" id="task-appointment-check-{{$task->id}}" class="task-appointment-completed">
+								@else
+									<input type="checkbox" class="task-completed" data-action="{{route('contacts.taskCompleted', ['taskId' => $task->id])}}">
+								@endif
 							@endif
-                            {{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif
-                        </label>
-                    </div>
-                @else
-                    {{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif
-                @endcan
-            </td>
-            <td>
-                @can('delete', $task)
-                    <button data-action="{{route('tasks.remove', ['taskId' => $task->id])}}" class="remove-task btn btn-default btn-xs"><i class="fa fa-trash"></i></button>
-                @endcan
-            </td>
+							Ответственный: {{$task->user->name}}<br>
+							{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif
+						</label>
+					</div>
+				@else
+					Ответственный: {{$task->user->name}}<br>
+					{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif
+				@endcan
+			</td>
+			<td>
+				@can('delete', $task)
+					@if ( \Auth::user()->isAdmin() || $task->user_id == $user_id )
+						<button data-action="{{route('tasks.remove', ['taskId' => $task->id])}}" class="remove-task btn btn-default btn-xs"><i class="fa fa-trash"></i></button>
+					@endif
+				@endcan
+			</td>
 		@elseif( $task->completed == 'canceled')
-            <td> {{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif ! встреча не проведена</td>
-        @else
-            <td><s> {{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif </s></td>
-        @endif
-    </tr>
+			<td> 
+			Ответственный: {{$task->user->name}}<br>
+			{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif ! встреча не проведена</td>
+		@else
+			<td>
+			Ответственный: {{$task->user->name}}<br>
+			<s> {{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif </s></td>
+		@endif
+	</tr>
 	<tr id="task-appointment-complete-template-{{$task->id}}" style="display: none;">
 		<td colspan="2">
 			<div class="panel panel-success task-appointment-complete-item" style="margin-top: 15px;">
@@ -73,7 +83,7 @@
 				{
 					$('#task_item_{{$task->id}}').remove();
 					$('#task-appointment-complete-template-{{$task->id}}').remove();
-                    $('#task-list').append(content);
+					$('#task-list').append(content);
 				}
 			});
 			

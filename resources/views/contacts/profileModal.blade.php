@@ -150,7 +150,7 @@
             $.ajax({
                 type: "POST",
                 url: $('.task-create.btn').attr('href'),
-                data: {type: $('#task-form').find('.input-type').val(), _token: window.Laravel.csrfToken, deadline: $('#task-form').find('#deadline').val(), description: $('#task-form').find('#description').val() },
+                data: {type: $('#task-form').find('.input-type').val(), _token: window.Laravel.csrfToken, deadline: $('#task-form').find('#deadline').val(), description: $('#task-form').find('#description').val(), user_id: $('#task-form').find('.user-select').val() },
                 success: function (content)
                 {
                     $('#task-list').append(content);

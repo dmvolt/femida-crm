@@ -181,7 +181,36 @@ class ContactController extends Controller
 		}
 		
 		$department = Department::findOrFail($depId);
-        return view('contacts.show', compact('contact', 'title', 'department'));
+		
+		$user_id = \Auth::user()->id;
+		
+		$users_result = User::with('team')
+				->where('blocked', 0)
+				->where('department_id', $depId)
+				->orderBy('name')
+				->get();
+				
+		$users = [];
+				
+		if($users_result){
+			foreach($users_result as $value){
+				if($value->team_id){
+					$users[$value->team->name][] = $value;
+				}
+			}
+		}
+		
+		$important = [];
+		
+		if($contact->tasks){
+			foreach($contact->tasks as $task){
+				if($contact->user->id != $task->user->id){
+					$important[$task->user->id]	= $task;
+				}
+			}
+		}		
+		
+        return view('contacts.show', compact('contact', 'title', 'department', 'users', 'user_id', 'important'));
     }
 
     public function task($id)
@@ -191,6 +220,14 @@ class ContactController extends Controller
 
         $type = Input::get('type', 'recall');
         $deadline = Input::get('deadline');
+		
+		if (\Auth::user()->isAdmin()) {
+			$user_id = Input::get('user_id', \Auth::user()->id);
+		}
+		else
+		{
+			$user_id = \Auth::user()->id;
+		}
 
         $task = new Task(); // @todo: check permission
         $task->name = Task::$types[$type] ?: '';
@@ -205,15 +242,15 @@ class ContactController extends Controller
 			$activity->type = 'Добавлен комментарий';
 			$activity->text = Input::get('description');
 			$activity->contact_id = $contact->id;
-			$activity->user_id = \Auth::user()->id;
+			$activity->user_id = $user_id;
 			$activity->save();
 			$deadline = Carbon::now();
 		}
         $task->deadline = Carbon::parse($deadline)->format('Y-m-d H:i');
 
-        $task->user_id = Auth::user()->id;
+        $task->user_id = $user_id;
 		$task->income_id = 0;
-        $task->author_id = Auth::user()->id;
+        $task->author_id = $user_id;
         $task->contact_id = $contact->id;
 		if ($department)
 			$task->department_id = $department->id;
@@ -239,7 +276,7 @@ class ContactController extends Controller
         }
 
 
-        return view('contacts.task.view', ['task' => $task]);
+        return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
     }
 	
 	public function taskAppointmentCompleted()
@@ -260,7 +297,9 @@ class ContactController extends Controller
 			
         $task->save();
 		
-        return view('contacts.task.view', ['task' => $task]);
+		$user_id = \Auth::user()->id;
+		
+        return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
     }
 
     public function taskCompleted($id = null)
@@ -275,7 +314,10 @@ class ContactController extends Controller
 			$task->income_id = Input::get('income_id');
 		}
         $task->save();
-        return view('contacts.task.view', ['task' => $task]);
+		
+		$user_id = \Auth::user()->id;
+		
+        return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
     }
 
     public function show($id)
@@ -342,8 +384,8 @@ class ContactController extends Controller
 
         $lead = new Lead(); // @todo: check permission
         $lead->status_id = Input::get('status', LeadStatus::getDefaultStatus());
-        $lead->user_id = Auth::user()->id;
-        $lead->department_id = Auth::user()->department_id;
+        $lead->user_id = $contact->user->id;
+        $lead->department_id = $contact->user->department_id;
         $lead->contact_id = $contact->id;
         //$lead->name = 'Сделка №'. Input::get('number', 1);
 		$lead->name = Input::get('name');

@@ -8,7 +8,7 @@
 			@if ($contact->tasks->where('type', '!=', 'make_appointment')->count() > 0 || $contact->leads->count() > 0)
 				<a href="#" class="btn btn-default btn-sm" data-dismiss="modal"> Закрыть</a>
 			@else
-				@if ($contact->user_id !== \Auth::user()->id)
+				@if ($contact->user_id !== $user_id)
 					<a href="#" class="btn btn-default btn-sm" data-dismiss="modal"> Закрыть</a>
 				@endif
 			@endif
@@ -41,6 +41,12 @@
 							</p>
 							@endif							
                         @endif
+						
+						@if (!empty($important))
+							@foreach ($important as $task)
+								<p><i class="fa fa-user"></i> <strong>Ответственный:</strong> <a href="{{route('users.view', ['userId' => $task->user->id])}}">{{$task->user->name}}</a> </p>	
+							@endforeach
+						@endif
 
                         <div class="user-button">
                             <div class="row">
@@ -175,12 +181,30 @@
                     </div>
                     <div class="ibox-content">
                         <table id="task-list" class="table">
-                            @each('contacts.task.view', $contact->tasks, 'task')
+							@if($contact->tasks)
+								@foreach($contact->tasks as $task)
+									@include('contacts.task.view', ['task' => $task, 'user_id' => $user_id])
+								@endforeach
+							@endif
                         </table>
 
                         <div id="task-form" style="display: none;">
 
                             <div class="form-group clearfix" id="fg_deadline">
+							
+								@if(\Auth::user()->isAdmin() && !empty($users))
+									<label for="deadline" class="col-sm-2 control-label required">Ответственный</label>
+									<select class="form-control form-control user-select" name="user_id">
+										@foreach($users as $team_name => $team_users)
+											<optgroup label="{{$team_name}}">
+												@foreach($team_users as $item)
+													<option value="{{$item->id}}">{{$item->name}}</option>
+												@endforeach
+											</optgroup>
+										@endforeach
+									</select>
+								@endif
+								
                                 <label for="deadline" class="col-sm-2 control-label required">Дата</label>
                                 <input class="form-control form-control datetime-input" type="text" id="deadline" name="deadline">
 								<input class="form-control form-control description-input" type="text" id="description" name="description">

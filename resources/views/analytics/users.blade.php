@@ -47,7 +47,7 @@
                     @foreach(\App\User::filterDepartment($departmentId)->filterTeam($teamId)->get() as $user)
 
                         <?php
-						 // if ($user->blocked !== 1) {
+						if ($user->blocked !== 1) {
                             
                             //$profitManager = $user->getProfitManager($departmentId, $dateStart, $dateEnd);
 							
@@ -55,19 +55,19 @@
 							$allTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->count();
 							
 							// назначеных встреч
-							$appointmentTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'make_appointment')->count();
+							$appointmentTasks = \App\Task::whereUserId($user->id)->where(['type' => 'appointment'])->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->count();
 							
 							// звонок
-							$recallTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'recall')->count();
+							$recallTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where(['type' => 'recall'])->count();
 							
 							// брак
-							$cancelTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'cancel')->count();
+							$cancelTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where(['type' => 'cancel'])->count();
 							
 							// судебное заседание
-							$courtHearingTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'court_hearing')->count();
+							$courtHearingTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where(['type' => 'court_hearing'])->count();
 							
                             // фактически проведенных встреч
-							$completedAppointmentTasks = \App\Task::whereUserId($user->id)->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->where('type', '=', 'make_appointment')->where('completed', '=', 'yes')->count();
+							$completedAppointmentTasks = \App\Task::whereUserId($user->id)->where(['type' => 'appointment', 'completed' => 'yes'])->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->count();
 							
 							// новых договоров
 							$userLeads = \App\Lead::whereUserId($user->id)->filterDepartment($departmentId)->filterTeam($teamId)->where('created_at', '>=', $dateStart)->where('created_at', '<=', $dateEnd);
@@ -118,10 +118,10 @@
 								$last_login = 'Да';
 							else
 								$last_login = 'Нет';
-						 // }
+						}
                         ?>
-						{{-- @if ($user->blocked !== 1) --}}
-                        <tr @if($user->blocked == 1) style="display: none;" @endif>
+						@if ($user->blocked !== 1)
+                        <tr>
                             <td><a href="{{route('users.view', ['userId' => $user->id])}}"> {{$user->name}}</a></td>
 							<td><b>{{$percentRevenue}}%</b> ({{$user->revenue}})</td>
 							<td>{{$last_login}}</td>
@@ -136,7 +136,7 @@
 							<td>{{$plannedProfit}}</td>
 							<td>{{$profit}}</td>
                         </tr>
-						{{-- @endif --}}
+						@endif
 
                     @endforeach
                     </tbody>
