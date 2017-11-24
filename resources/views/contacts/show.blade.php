@@ -189,11 +189,10 @@
                         </table>
 
                         <div id="task-form" style="display: none;">
-
-                            <div class="form-group clearfix" id="fg_deadline">
-							
-								@if(\Auth::user()->isAdmin() && !empty($users))
-									<label for="deadline" class="col-sm-2 control-label required">Ответственный</label>
+						
+							@if(\Auth::user()->isAdmin() && !empty($users))
+								<div class="form-group clearfix" id="fg_user_id">
+									<label for="user_id" class="col-sm-2 control-label required">Ответственный</label>
 									<select class="form-control form-control user-select" name="user_id">
 										@foreach($users as $team_name => $team_users)
 											<optgroup label="{{$team_name}}">
@@ -203,9 +202,11 @@
 											</optgroup>
 										@endforeach
 									</select>
-								@endif
-								
-                                <label for="deadline" class="col-sm-2 control-label required">Дата</label>
+								</div>
+							@endif
+                            
+                            <div class="form-group clearfix" id="fg_deadline">
+                                <label for="deadline" class="col-sm-2 control-label control-label2 required">Дата</label>
                                 <input class="form-control form-control datetime-input" type="text" id="deadline" name="deadline">
 								<input class="form-control form-control description-input" type="text" id="description" name="description">
                                 <input class="input-type" type="hidden" name="type">

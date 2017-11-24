@@ -123,11 +123,11 @@
 				//alert($('.datetime-input').attr('class'));
 				$('.datetime-input').hide();
 				$('.description-input').show();
-				$('.control-label').text('Описание');
+				$('.control-label2').text('Описание');
 			} else {
 				$('.datetime-input').show();
 				$('.description-input').hide();
-				$('.control-label').text('Дата');
+				$('.control-label2').text('Дата');
 			}
 
         });
