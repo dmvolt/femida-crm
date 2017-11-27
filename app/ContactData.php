@@ -39,6 +39,24 @@ class ContactData extends Model
     protected $revisionFormattedFieldNames = array(
         'number' => 'number',
     );
+	
+	protected $fillable = [
+        'number',
+        'code',
+        'issued',
+        'address',
+        'date',
+		
+		'credit_sum',
+		'credit_target',
+		'is_pledge',
+		'is_guarantor',
+		'is_reference',
+		'is_delay',
+		'contact_birth',
+		'contact_address',
+		'contact_inn',
+    ];
 
     public function identifiableName()
     {
