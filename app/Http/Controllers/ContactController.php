@@ -126,10 +126,11 @@ class ContactController extends Controller
         }
 
         $source = $this->getSource($id, new Contact());
-
+		
         $store = \DataForm::source($source);
         $store->add('name','Имя', 'text')->rule('required|min:2');
-        $store->add('phone','Телефон', 'text')->rule('required|min:5');
+		$store->add('phone','Телефон', 'text')->updateValue(substr($source->phone, 2))->rule('required|min:5');
+		
         $store->add('email','E-mail', 'text');
         $store->add('origin_id','Источник клиента', 'select')->options(ContactOrigin::all()->pluck('name', 'id'));
 
