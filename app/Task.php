@@ -6,6 +6,7 @@ use Cache;
 use Carbon\Carbon;
 use Gate;
 use Venturecraft\Revisionable\RevisionableTrait;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Task
