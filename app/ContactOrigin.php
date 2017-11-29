@@ -27,6 +27,4 @@ class ContactOrigin extends Model
     {
         return $this->hasMany(Contact::class, 'origin_id');
     }
-
-
 }

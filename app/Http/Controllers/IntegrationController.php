@@ -6,6 +6,7 @@ use App\Department;
 use App\Lead;
 use App\LeadStatus;
 use App\Contact;
+use App\ContactOrigin;
 use App\Task;
 use Carbon\Carbon;
 use Input;
@@ -67,12 +68,29 @@ class IntegrationController extends Controller
 		if ($flag) {
 			$description = Input::get('description', '');
 			$leadName = Input::get('lead_name', 'Заявка с сайта');
+			$utm_source = Input::get('utm_source', 'нет');
 			
 			\Log::info('integration Данные: description - '.$description.', lead_name - '.$leadName);
+			\Log::info('integration Данные: utm_source - '.$utm_source);
 			
 			$contact = Contact::firstOrNew(['phone' => $phone]);
 			$contact->name = ($name == null) ? 'не указано' : $name;
 			$contact->phone = $phone;
+			
+			if($utm_source && !empty($utm_source) && $utm_source == 'Yandex-Direct'){
+				if($currentOrigin = ContactOrigin::where('name', 'Яндекс')->first()){
+					$contact->origin_id = $currentOrigin->id;
+				}
+			} elseif($utm_source && !empty($utm_source) && $utm_source == 'Google-Adwords'){
+				if($currentOrigin = ContactOrigin::where('name', 'Google')->first()){
+					$contact->origin_id = $currentOrigin->id;
+				}
+			} else {
+				if($currentOrigin = ContactOrigin::where('name', 'Заявка с сайта')->first()){
+					$contact->origin_id = $currentOrigin->id;
+				}
+			}
+
 			$contact->save();
 			
 			\Log::info('integration Contact Id - '.$contact->id);

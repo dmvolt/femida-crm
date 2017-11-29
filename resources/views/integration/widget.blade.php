@@ -25,11 +25,34 @@
 				// Обрезаем все что после "?"
 				var urlStr = $(location).attr('href');
 				urlStr = urlStr.split('?')[0];
+				
+				
+				// Получаем параметр utm_source (utm метка)
+				var utmSource = '';
+				var params = window
+					.location
+					.search
+					.replace('?','')
+					.split('&')
+					.reduce(
+						function(p,e){
+							var a = e.split('=');
+							p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+							return p;
+						},
+						{}
+					);
+				
+				// Если параметр присутствует в url - получаем его
+				if(params['utm_source'] !== undefined){
+					utmSource = params['utm_source'];
+				}
 
                 var requestData = {
                     'name': $(this).find('input').slice(0,1).val(),
                     'phone': $(this).find('input').slice(1,2).val(),
                     'description' : description,
+					'utm_source' : utmSource,
                     //'lead_name' : 'Заявка с сайта ' + $(location).attr('href')
 					'lead_name' : 'Заявка с сайта ' + urlStr
                 };
