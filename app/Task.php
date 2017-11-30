@@ -6,7 +6,6 @@ use Cache;
 use Carbon\Carbon;
 use Gate;
 use Venturecraft\Revisionable\RevisionableTrait;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Task
@@ -242,7 +241,7 @@ class Task extends Model
     public static function updateNewRequestCount()
     {
 		$tasks = Task::where('type', '=', 'request')->has('contact');
-		if ( ! \Auth::user()->isAdmin() ) 
+		if ( \Auth::user() && ! \Auth::user()->isAdmin() ) 
 		{
 			$tasks = $tasks->where('department_id', '=', \Auth::user()->department_id);
 		}
