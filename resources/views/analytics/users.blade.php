@@ -52,7 +52,7 @@
                             //$profitManager = $user->getProfitManager($departmentId, $dateStart, $dateEnd);
 							
 							// всего задач
-							$allTasks = \App\Task::whereUserId($user->id)->where(['type' => 'request'])->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->count();
+							$allTasks = \App\Task::whereUserId($user->id)->where(['type' => 'make_appointment'])->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->count();
 							
 							// назначеных встреч
 							$appointmentTasks = \App\Task::whereUserId($user->id)->where(['type' => 'appointment'])->where('updated_at', '>=', $dateStart)->where('updated_at', '<=', $dateEnd)->count();
