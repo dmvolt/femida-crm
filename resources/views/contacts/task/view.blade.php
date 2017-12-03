@@ -5,12 +5,10 @@
 				@can('update', $task)
 					<div class="checkbox m-r-xs">
 						<label>
-							@if ( \Auth::user()->isAdmin() || $task->user_id == $user_id )
-								@if ( $task->type == 'appointment' )
-									<input type="checkbox" id="task-appointment-check-{{$task->id}}" class="task-appointment-completed">
-								@else
-									<input type="checkbox" class="task-completed" data-action="{{route('contacts.taskCompleted', ['taskId' => $task->id])}}">
-								@endif
+							@if ( $task->type == 'appointment' )
+								<input type="checkbox" id="task-appointment-check-{{$task->id}}" class="task-appointment-completed">
+							@else
+								<input type="checkbox" class="task-completed" data-action="{{route('contacts.taskCompleted', ['taskId' => $task->id])}}">
 							@endif
 							Ответственный: {{$task->user->name}}<br>
 							{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif
@@ -23,9 +21,7 @@
 			</td>
 			<td>
 				@can('delete', $task)
-					@if ( \Auth::user()->isAdmin() || $task->user_id == $user_id )
-						<button data-action="{{route('tasks.remove', ['taskId' => $task->id])}}" class="remove-task btn btn-default btn-xs"><i class="fa fa-trash"></i></button>
-					@endif
+					<button data-action="{{route('tasks.remove', ['taskId' => $task->id])}}" class="remove-task btn btn-default btn-xs"><i class="fa fa-trash"></i></button>
 				@endcan
 			</td>
 		@elseif( $task->completed == 'canceled')
