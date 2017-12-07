@@ -271,12 +271,9 @@ class ContactController extends Controller
 					'text' => $text
 				];
 				
-				//$contact->notify(new MessageNotification($message));
-				
+				$contact->notify(new MessageNotification($message));
             }
         }
-
-
         return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
     }
 	
@@ -472,5 +469,4 @@ class ContactController extends Controller
 				return 1;
 		// return $id;
 	}
-
 }
