@@ -52,6 +52,7 @@ class SettingController extends Controller
     public function userStore(Request $request, $id = null)
     {
         if ( $id == null ) $id = Input::get('modify', null);
+		
         $source = $id ? User::find($id) : new User();
 		
         $store = \DataForm::source($source);
@@ -59,7 +60,7 @@ class SettingController extends Controller
         $store->add('email','E-mail', 'text')->rule('required|min:5');
 
         $changePassword = false;
-        if ($request->isMethod('post'))
+        if ($id && $request->isMethod('post'))
         {
             if( Input::get('password') != '' )
             {
