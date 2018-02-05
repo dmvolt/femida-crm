@@ -51,6 +51,8 @@ class SettingController extends Controller
      */
     public function userStore(Request $request, $id = null)
     {
+		$changePassword = false;
+		
         if ( $id == null ) $id = Input::get('modify', null);
 		
         $source = $id ? User::find($id) : new User();
@@ -58,25 +60,56 @@ class SettingController extends Controller
         $store = \DataForm::source($source);
 		
         $store->add('email','E-mail', 'text')->rule('required|min:5');
-
-        $changePassword = false;
-        if ($id && $request->isMethod('post'))
+        $store->add('name','Имя', 'text')->rule('required|min:2');
+		
+		if ($id && $request->isMethod('post'))
         {
-            if( Input::get('password') != '' )
+			if( Input::get('password') != '' )
             {
                 $store->add('password','Пароль', 'password')->rule('required|min:5');
                 $changePassword = true;
             }
+			
+			if(Input::get('role_id') && $id != \Auth::user()->id)
+            {
+                $store->add('role_id','Роль пользователя', 'select')->options(User::$roles)->attributes(((!\Auth::user()->isDepLeader() && !\Auth::user()->isAdmin()) ? ['disabled'] : []));
+            }
+			
+            if(Input::get('department_id') && $id != \Auth::user()->id)
+            {
+                $store->add('department_id','Филиал', 'select')->options(Department::all()->pluck('name', 'id'))->attributes(((!\Auth::user()->isDepLeader() && !\Auth::user()->isAdmin()) ? ['disabled'] : []));
+            }
+			
+			if(Input::get('team_id') && $id != \Auth::user()->id)
+            {
+                $store->add('team_id','Отдел', 'select')->options(Team::all()->pluck('name', 'id'))->attributes(((!\Auth::user()->isDepLeader() && !\Auth::user()->isAdmin()) ? ['disabled'] : []));
+            }
         }
         else
         {
-            $store->add('password','Пароль', 'password')->rule('required|min:5');
+			$store->add('password','Пароль', 'password')->rule('required|min:5');
+            
+			if(\Auth::user()->isDepLeader())
+			{
+				$store->add('role_id','Роль пользователя', 'select')->options(User::$depleader_roles);
+			}
+			elseif(\Auth::user()->isAdmin())
+			{
+				$store->add('role_id','Роль пользователя', 'select')->options(User::$roles);
+			}
+			
+			if(\Auth::user()->isDepLeader())
+			{
+				$store->add('department_id','Филиал', 'select')->options(Department::all()->where('id', '=', \Auth::user()->department_id)->pluck('name', 'id'));
+			}
+			elseif(\Auth::user()->isAdmin())
+			{
+				$store->add('department_id','Филиал', 'select')->options(Department::all()->pluck('name', 'id'));
+			}
+			
+			$store->add('team_id','Отдел', 'select')->options(Team::all()->pluck('name', 'id'))->attributes(((!\Auth::user()->isDepLeader() && !\Auth::user()->isAdmin()) ? ['disabled'] : []));
         }
-
-        $store->add('name','Имя', 'text')->rule('required|min:2');
-        $store->add('role_id','Роль пользователя', 'select')->options(User::$roles)->attributes((!\Auth::user()->isAdmin() ? ['disabled'] : []));
-        $store->add('department_id','Филиал', 'select')->options(Department::all()->pluck('name', 'id'))->attributes((!\Auth::user()->isAdmin() ? ['disabled'] : []));
-        $store->add('team_id','Отдел', 'select')->options(Team::all()->pluck('name', 'id'))->attributes((!\Auth::user()->isAdmin() ? ['disabled'] : []));
+		
         $store->add('phone','Телефон', 'text');
         $store->add('phone_work','Рабочий телефон', 'text');
         $store->add('bonus','Процент от сделок', 'text')->rule('required');

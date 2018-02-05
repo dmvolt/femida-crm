@@ -89,6 +89,14 @@ class User extends Authenticatable
     public static $roles = [
         self::MANAGER_ID => 'Менеджер', self::LEADER_ID => 'Руководитель отдела', self::ADMIN_ID => 'Администратор', self::DEPLEADER_ID => 'Руководитель филиала'
     ];
+	
+	public static $depleader_roles = [
+        self::MANAGER_ID => 'Менеджер', self::LEADER_ID => 'Руководитель отдела', self::DEPLEADER_ID => 'Руководитель филиала'
+    ];
+	
+	public static $leader_roles = [
+        self::MANAGER_ID => 'Менеджер', self::LEADER_ID => 'Руководитель отдела'
+    ];
 
 
     public function identifiableName()
