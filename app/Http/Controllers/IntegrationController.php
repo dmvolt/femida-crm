@@ -136,12 +136,28 @@ class IntegrationController extends Controller
         $email = Input::get('email');
 		
 		$flag = true;
+		$task_flag = true;
 		
 		if (strlen($phone) >= 9) {
 			if ($phone{0} != '7' && $phone{0} != '8'){
 				$phone = "7".$phone;
 			} else {
 				$phone = "7".substr($phone, 1);
+			}
+		}
+		
+		// Проверяем, сколько прошло времени с предидущей заявки
+		if (($c = Contact::where('phone', $phone)->first()) !== null) {
+			
+			if (($t = $c->tasks->where('type', '=', 'request')->sortBy('created_at')->last()) !== null) {
+				
+				$task_flag = false;
+				
+				$dt = Carbon::createFromFormat('Y-m-d H:i', $t->created_at);
+				
+				if ($dt->diffInHours(Carbon::now()) > 1){
+					$task_flag = true;
+				}
 			}
 		}
 		
@@ -169,19 +185,25 @@ class IntegrationController extends Controller
 
 			// @todo: check permissions
 			$department = Department::findOrFail($depId);
+			
+			
+			if($task_flag){
 
-			$task = new Task();
-			$task->name = 'Звонок с CallbackKiller';
-			$task->description = $this->getCallbackDescription();
-			$task->type = 'request';
-			$task->user_id = 0;
-			$task->author_id = 0;
-			$task->deadline = Carbon::now();
-			$task->contact_id = $contact->id;
-			$task->department_id = $department->id;
-			$task->save();
+				$task = new Task();
+				$task->name = 'Звонок с CallbackKiller';
+				$task->description = $this->getCallbackDescription();
+				$task->type = 'request';
+				$task->user_id = 0;
+				$task->author_id = 0;
+				$task->deadline = Carbon::now();
+				$task->contact_id = $contact->id;
+				$task->department_id = $department->id;
+				$task->save();
+				
+				\Log::info('CallbackKiller Task Id - '.$task->id);
 
-			Task::updateNewRequestCount();
+				Task::updateNewRequestCount();
+			}
 		}
 
         return response()->json(null);
