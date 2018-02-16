@@ -208,8 +208,9 @@ class SettingController extends Controller
         $source = $id ? Department::find($id) : new Department();
 
         $store = \DataForm::source($source);
-        $store->add('name','Имя', 'text')->rule('required|min:2');
-        $store->add('address','Адрес', 'text')->rule('required|min:2');
+        $store->add('name', 'Имя', 'text')->rule('required|min:2');
+        $store->add('address', 'Адрес', 'text')->rule('required|min:2');
+		$store->add('city', 'Город', 'text')->rule('required|min:2');
 
         $store->submit('Сохранить');
 

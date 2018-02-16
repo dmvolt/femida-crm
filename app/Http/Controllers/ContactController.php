@@ -134,7 +134,7 @@ class ContactController extends Controller
         $store->add('email','E-mail', 'text');
         $store->add('origin_id','Источник клиента', 'select')->options(ContactOrigin::all()->pluck('name', 'id'));
 
-        $user = $store->add('user_id','Менеджер', 'select')->options(User::all()->pluck('name', 'id'))->attributes(['class' => 'chosen-select']);
+        $user = $store->add('user_id','Менеджер', 'select')->options(User::all()->where('department_id', '=', \Auth::user()->department_id)->pluck('name', 'id'))->attributes(['class' => 'chosen-select']);
 
         if ( ! $source->exists )
         {
