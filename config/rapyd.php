@@ -36,11 +36,11 @@ return [
     'fields'=> [
         'attributes' => ['class'=>'form-control'],
         'date' => [
-            'format' => 'Y-m-d',
+            'format' => 'd.m.Y',
         ],
         'datetime' => [
-            'format' => 'Y-m-d H:i',
-            'store_as' => 'Y-m-d H:i',
+            'format' => 'd.m.Y H:i',
+            'store_as' => 'd.m.Y H:i',
         ],
     ],
     

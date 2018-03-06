@@ -13,6 +13,7 @@ use App\Team;
 use App\User;
 use App\Task;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 use App\Http\Requests;
 use Input;
@@ -115,6 +116,10 @@ class SettingController extends Controller
         $store->add('bonus','Процент от сделок', 'text')->rule('required');
         $store->add('revenue','Месячный план продаж', 'text')->rule('required|int');
         $store->add('blocked','Заблокирован', 'checkbox');
+		
+		$store->add('filename', 'Картинка', 'image')
+			->move('uploads/images/users/')
+			->preview(100, 100);
 
         $store->add('number','Серия и номер', 'text');
         $store->add('code','Код', 'text');
@@ -124,7 +129,8 @@ class SettingController extends Controller
 
         $store->submit('Сохранить');
 		
-        $store->saved(function () use ($store, $changePassword) {
+        $store->saved(function () use ($store, $changePassword) 
+		{
 			if ($store->model->blocked == 1)
 			{
 				$depLeader = User::all()->where('department_id', '=', $store->model->department_id)->where('role_id', '=', '4')->first();
@@ -142,6 +148,26 @@ class SettingController extends Controller
             {
                 $store->model->password = \Hash::make($store->model->password);
             }
+			
+			/*********************************** IMAGE ************************************/
+			if($store->model->filename && file_exists(base_path().'/public_html/uploads/images/users/'.$store->model->filename) && !file_exists(base_path().'/public_html/uploads/images/users/100x100/'.$store->model->filename)){
+				
+				// open an image file
+				$img = Image::make('uploads/images/users/'.$store->model->filename);
+
+				// resize the image to a width of 300 and constrain aspect ratio (auto height)
+				$img->resize(100, null, function ($constraint) {
+					$constraint->aspectRatio();
+				});
+				
+				// crop image
+				$img->crop(100, 100, null, 10);
+
+				
+				// finally we save the image as a new file
+				$img->save('uploads/images/users/100x100/'.$store->model->filename);
+			}
+			/********************************** /IMAGE ************************************/
 
             $store->model->save();
             return redirect('/settings');

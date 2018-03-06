@@ -1,5 +1,5 @@
 <tr data-payment-id="{{$_payment->id}}" data-lead-id="{{$leadId}}" id="payment-{{$_payment->id}}">
-    <td class="deadline-td">{{$_payment->deadline}}</td>
+    <td class="deadline-td">{{$_payment->getDeadlineAttribute($_payment->deadline)}}</td>
 	<td class="cost-td">{{$_payment->cost}}</td>
     <td class="income-td">{{$_payment->income ? $_payment->income->name : ''}}</td>
 

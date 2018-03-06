@@ -28,6 +28,7 @@
     <script src="/js/plugins/jquery-mousewheel/jquery.mousewheel.min.js"></script>
     <script src="/js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="/js/plugins/morris/morris.js"></script>
+	<script src="/js/jquery.sticky.js"></script>
 
 
     <link media="all" type="text/css" rel="stylesheet" href="/packages/zofe/rapyd/assets/redactor/css/redactor.css">
@@ -200,6 +201,8 @@
 
     $(document).ready(function ()
     {
+		$("#side-menu2").sticky({topSpacing:0});
+		
         toastr.options = {
             "closeButton": true,
             "debug": false,

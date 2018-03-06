@@ -87,11 +87,11 @@ class User extends Authenticatable
     const ADMIN_ID = 3;
 
     public static $roles = [
-        self::MANAGER_ID => 'Менеджер', self::LEADER_ID => 'Руководитель отдела', self::ADMIN_ID => 'Администратор', self::DEPLEADER_ID => 'Руководитель филиала'
+        self::MANAGER_ID => 'Менеджер', self::LEADER_ID => 'Руководитель отдела', self::ADMIN_ID => 'Директор', self::DEPLEADER_ID => 'Управляющий директор'
     ];
 	
 	public static $depleader_roles = [
-        self::MANAGER_ID => 'Менеджер', self::LEADER_ID => 'Руководитель отдела', self::DEPLEADER_ID => 'Руководитель филиала'
+        self::MANAGER_ID => 'Менеджер', self::LEADER_ID => 'Руководитель отдела', self::DEPLEADER_ID => 'Управляющий директор'
     ];
 	
 	public static $leader_roles = [
@@ -106,7 +106,11 @@ class User extends Authenticatable
 
     public function getUrlAvatar()
     {
-        return '/img/images.png ';
+		if($this->filename){
+			return '/uploads/images/users/100x100/'.$this->filename;
+		} else {
+			return '/img/images.png';
+		}
     }
 
     public function getRevisionUnknownString()

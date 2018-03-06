@@ -1,4 +1,10 @@
 <div id="tab-2" class="tab-pane">
+	<form action="{{route('contacts.addComment', ['contactId' => $contact->id])}}" method="POST">
+        {!! csrf_field() !!}
+        <textarea id="comment" rows="3" name="comment" class="md-input" data-provide="markdown" required></textarea>
+		<button class="btn btn-primary m pull-right"> добавить</button>
+		
+    </form>
     <div class="feed-activity-list-comments" style="margin-top: 60px;">
 		@if ($contact->activities->count() == 0)
 			Нет комментариев

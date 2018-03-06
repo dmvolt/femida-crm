@@ -80,7 +80,7 @@ class ContactController extends Controller
         $grid->add('<i class="fa fa-envelope"> </i> {{$email}}','E-mail');
         $grid->add('phone','Телефон');
 
-        $grid->edit(route('contacts.store'), 'Редактировать','modify|delete')->style("width:15px");
+		$grid->edit(route('contacts.store'), 'Редактировать','modify|delete')->style("width:15px");
         $grid->link(route('contacts.store'), "Новый контакт", "TR");
 
         $grid->orderBy('id','desc');
@@ -281,6 +281,7 @@ class ContactController extends Controller
     {
 		$id = Input::get('task_id');
 		$complete_status = Input::get('complete_status');
+		$deadline = Input::get('deadline');
 		
 		$task = Task::findOrFail($id);
 		
@@ -289,6 +290,9 @@ class ContactController extends Controller
 		}
 		elseif($complete_status == 'canceled'){
 			$task->completed = 'canceled';
+		}
+		elseif($complete_status == 'move'){
+			$task->deadline = Carbon::parse($deadline)->format('Y-m-d H:i');
 		}
 		
 		$task->income_id = 0;

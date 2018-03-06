@@ -32,8 +32,6 @@ class LeadController extends Controller
         {
             $leads = $leads->withStatusOpened();
         }
-		
-
 
 		if ($id != 0) {
 			$leads = $leads->where('department_id', '=', $id);

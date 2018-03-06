@@ -11,7 +11,7 @@ class LeadPolicy extends AbstractPolicy
 
     public function show(User $user, Lead $lead)
     {
-        return $lead->department_id  == $user->department_id;
+		return $lead->department_id  == $user->department_id;
     }
 
     public function update(User $user, Lead $lead)
@@ -38,6 +38,7 @@ class LeadPolicy extends AbstractPolicy
 
     public function delete(User $user, Lead $lead)
     {
-        return $this->update($user, $lead);
+        //return $this->update($user, $lead);
+		return $user->isAdmin();
     }
 }

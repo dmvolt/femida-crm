@@ -32,4 +32,29 @@ abstract class AbstractPolicy
         return true;
     }
 
+	public function showLeader($user)
+    {
+        if(($user->isLeader() && $user->team_id == 2) || $user->isDepLeader()){
+			return true;
+		}
+    }
+	
+	public function showDepLeader($user)
+    {
+        return $user->isDepLeader();
+    }
+	
+	public function showManager($user)
+    {
+        if(($user->isLeader() && $user->team_id == 4) || $user->isDepLeader() || ($user->isManager() && $user->team_id == 4)){
+			return true;
+		}
+    }
+	
+	public function showYurist($user)
+    {
+		if(($user->isLeader() && $user->team_id == 3) || $user->isDepLeader() || ($user->isManager() && $user->team_id == 3)){
+			return true;
+		}
+    }
 }

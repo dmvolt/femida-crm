@@ -311,7 +311,7 @@ class Task extends Model
     {
         if ( $value )
         {
-            return Carbon::parse($value)->format('d-m-Y H:i');
+            return Carbon::parse($value)->format('d.m.Y H:i');
         }
     }
 

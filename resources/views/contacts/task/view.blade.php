@@ -11,12 +11,12 @@
 								<input type="checkbox" class="task-completed" data-action="{{route('contacts.taskCompleted', ['taskId' => $task->id])}}">
 							@endif
 							Ответственный: {{$task->user->name}}<br>
-							{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif
+							{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->getDeadlineAttribute($task->deadline)}}@endif
 						</label>
 					</div>
 				@else
 					Ответственный: {{$task->user->name}}<br>
-					{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif
+					{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->getDeadlineAttribute($task->deadline)}}@endif
 				@endcan
 			</td>
 			<td>
@@ -27,27 +27,33 @@
 		@elseif( $task->completed == 'canceled')
 			<td> 
 			Ответственный: {{$task->user->name}}<br>
-			{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif ! встреча не проведена</td>
+			{{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->getDeadlineAttribute($task->deadline)}}@endif ! встреча не проведена</td>
 		@else
 			<td>
 			Ответственный: {{$task->user->name}}<br>
-			<s> {{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->deadline}}@endif </s></td>
+			<s> {{$task->typeName}} @if ($task->type == 'cancel') {{$task->description}} @else{{$task->getDeadlineAttribute($task->deadline)}}@endif </s></td>
 		@endif
 	</tr>
 	<tr id="task-appointment-complete-template-{{$task->id}}" style="display: none;">
 		<td colspan="2">
 			<div class="panel panel-success task-appointment-complete-item" style="margin-top: 15px;">
-				<div class="panel-heading">Встреча {{$task->deadline}}</div>
+				<div class="panel-heading">Встреча {{$task->getDeadlineAttribute($task->deadline)}}</div>
 				<div class="panel-body">
 					<form class="form-inline" id="task-appointment-complete-form-{{$task->id}}" action="{{route('contacts.taskAppointmentCompleted')}}">
 						{{csrf_field()}}
 						<input type="hidden" name="task_id" value="{{$task->id}}">
-						<div class="form-group" style="">
+						<div class="form-group">
 							<label class="control-label">Была ли фактически проведена встреча?</label>
-							<select class="form-control form-control" name="complete_status">
+							<select class="form-control" id="complete-status-{{$task->id}}" name="complete_status">
 								<option value="complete">Проведена</option>
 								<option value="canceled">Не проведена</option>
+								<option value="move">Перенести встречу</option>
 							</select>
+						</div>
+						
+						<div class="form-group" id="deadline-block-{{$task->id}}" style="display: none;">
+							<label for="deadline" class="control-label">Выберите новую дату</label><br>
+							<input class="form-control datetime-input" type="text" name="deadline">
 						</div>
 
 						<div class="form-group">
@@ -62,6 +68,14 @@
 	<script type="text/javascript">
 		$('#task-appointment-check-{{$task->id}}').on('change', function () {
 			$('#task-appointment-complete-template-{{$task->id}}').show();
+		});
+		
+		$('#complete-status-{{$task->id}}').on('change', function () {
+			if(this.value == 'move'){
+				$('#deadline-block-{{$task->id}}').show();
+			} else {
+				$('#deadline-block-{{$task->id}}').hide();
+			}
 		});
 		
 		$('#button-task-appointment-complete-save-{{$task->id}}').on('click', function () {

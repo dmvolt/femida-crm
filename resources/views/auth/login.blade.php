@@ -3,7 +3,7 @@
 @section('content')
     <div class="middle-box text-center loginscreen animated fadeInDown">
         <div class="row">
-            <img src="/logo.png" alt="Мем Фемиды" class="img-responsive center-block" />
+            <img src="/logo.png" alt="Меч Фемиды" class="img-responsive center-block" />
         </div>
         <div>
             <h3>Авторизация в CRM-системе</h3>
@@ -31,7 +31,7 @@
                 {{--<p class="text-muted text-center"><small>Do not have an account?</small></p>--}}
                 {{--<a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>--}}
             </form>
-            <p class="m-t"> <small>Sky Development 2016</small> </p>
+            <p class="m-t"> <small>Меч Фемиды <?= date('Y')?>г.</small> </p>
         </div>
     </div>
 @endsection

@@ -86,6 +86,7 @@ class TaskPolicy extends AbstractPolicy
 
     public function delete(User $user, Task $task)
     {
-        return $this->update($user, $task);
+        //return $this->update($user, $task);
+		return $user->isAdmin();
     }
 }

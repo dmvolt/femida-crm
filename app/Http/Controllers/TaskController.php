@@ -50,8 +50,15 @@ class TaskController extends Controller
 
         $tableRequest->orderBy('id','desc');
         $tableRequest->paginate(25);
-
-        $tasks = Task::with(['user', 'contact', 'lead.contact'])->where('type', '!=', 'request')->allowed()->FilterDepartment(\Auth::user()->department_id);
+		
+		if (! \Auth::user()->isAdmin() ) 
+		{
+			$tasks = Task::with(['user', 'contact', 'lead.contact'])->where('type', '!=', 'request')->allowed()->FilterDepartment(\Auth::user()->department_id);
+		}
+		else
+		{
+			$tasks = Task::with(['user', 'contact', 'lead.contact'])->where('type', '!=', 'request')->allowed();
+		}
 
 		if ( Input::get('search') != '1' )
 			$tasks = $tasks->where('deadline', '>=', Carbon::today());

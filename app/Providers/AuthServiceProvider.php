@@ -8,6 +8,7 @@ use App\Expense;
 use App\Lead;
 use App\LeadService;
 use App\Message;
+use App\User;
 use App\Policies\ContactPolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\ExpensePolicy;
@@ -15,6 +16,7 @@ use App\Policies\LeadPolicy;
 use App\Policies\MessagePolicy;
 use App\Policies\ServicePolicy;
 use App\Policies\TaskPolicy;
+use App\Policies\UserPolicy;
 use App\Task;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -34,6 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         Message::class => MessagePolicy::class,
         LeadService::class => ServicePolicy::class,
         Department::class => DepartmentPolicy::class,
+		User::class => UserPolicy::class,
     ];
 
     /**

@@ -45,5 +45,35 @@ return [
             'url' => '/settings',
             'baseModel' => new App\LeadService(), // @todo fix
         ],
+    ],
+	'menu2' => [
+        'dep' => [
+            'name' => 'Организация БП',
+            'icons' => 'fa fa-th-large',
+            'url' => 'http://mech-femidy.ru/start-franzh',
+			'police' => 'showDepLeader',
+            'baseModel' => new App\User,
+        ],
+        'leader' => [
+            'name' => 'Продажи',
+            'icons' => 'fa fa-diamond',
+            'url' => 'http://mech-femidy.ru/ОП',
+            'police' => 'showLeader',
+			'baseModel' => new App\User,
+        ],
+        'yurist' => [
+            'name' => 'Юристы',
+            'icons' => 'fa fa-tasks',
+            'url' => 'http://mech-femidy.ru/юрист',
+            'police' => 'showYurist',
+			'baseModel' => new App\User,
+        ],
+        'manager' => [
+            'name' => 'Брокеры',
+            'icons' => 'fa fa-paper-plane',
+            'url' => 'http://mech-femidy.ru/брокер',
+            'police' => 'showManager',
+			'baseModel' => new App\User,
+        ]
     ]
 ];

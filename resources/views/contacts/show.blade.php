@@ -54,13 +54,17 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="ibox border-bottom">
-							<h3>
-                                Информация о клиенте
-                            </h3>
-                            <div class="row">
-                                <div class="col-md-12">
+						
+						<div class="panel panel-success">
+							<div class="panel-heading" role="tab" id="headingUserInfo">
+								<h3 class="panel-title">
+									<a role="button" data-toggle="collapse" href="#collapseUserInfo" aria-expanded="true" aria-controls="collapseUserInfo">
+										<i class="fa fa-chevron-down"></i> Информация о клиенте
+									</a>
+								</h3>
+							</div>
+							<div id="collapseUserInfo" class="row panel-collapse collapse" role="tabpanel" aria-labelledby="headingUserInfo">
+								<div class="col-md-12 panel-body">
                                     <table class="table">
                                         <tr>
                                             <td><strong>Дата рождения:</strong></td>
@@ -124,14 +128,20 @@
 											</td>
                                         </tr>
                                     </table>
-                                </div>
-                            </div>
-							
-                            <h3>
-                                Паспортные данные
-                            </h3>
-                            <div class="row">
-                                <div class="col-md-12">
+								</div>
+							</div>
+						</div>
+						
+						<div class="panel panel-success">
+							<div class="panel-heading" role="tab" id="headingUserPassportInfo">
+								<h3 class="panel-title">
+									<a role="button" data-toggle="collapse" href="#collapseUserPassportInfo" aria-expanded="true" aria-controls="collapseUserPassportInfo">
+										<i class="fa fa-chevron-down"></i> Паспортные данные
+									</a>
+								</h3>
+							</div>
+							<div id="collapseUserPassportInfo" class="row panel-collapse collapse" role="tabpanel" aria-labelledby="headingUserPassportInfo">
+								<div class="col-md-12 panel-body">
                                     <table class="table">
                                         <tr>
                                             <td><strong>Серия и номер:</strong></td>
@@ -154,9 +164,9 @@
                                             <td>{{$contact->data->address or null}}</td>
                                         </tr>
                                     </table>
-                                </div>
-                            </div>
-                        </div>
+								</div>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>
@@ -182,7 +192,7 @@
                     <div class="ibox-content">
                         <table id="task-list" class="table">
 							@if($contact->tasks)
-								@foreach($contact->tasks as $task)
+								@foreach($contact->tasks()->where('type', '!=', 'approved_payment')->get() as $task)
 									@include('contacts.task.view', ['task' => $task, 'user_id' => $user_id])
 								@endforeach
 							@endif
@@ -193,7 +203,7 @@
 							@if(\Auth::user()->isAdmin() && !empty($users))
 								<div class="form-group clearfix" id="fg_user_id">
 									<label for="user_id" class="col-sm-2 control-label required">Ответственный</label>
-									<select class="form-control form-control user-select" name="user_id">
+									<select class="form-control user-select" name="user_id">
 										@foreach($users as $team_name => $team_users)
 											<optgroup label="{{$team_name}}">
 												@foreach($team_users as $item)
@@ -207,8 +217,8 @@
                             
                             <div class="form-group clearfix" id="fg_deadline">
                                 <label for="deadline" class="col-sm-2 control-label control-label2 required">Дата</label>
-                                <input class="form-control form-control datetime-input" type="text" id="deadline" name="deadline">
-								<input class="form-control form-control description-input" type="text" id="description" name="description">
+                                <input class="form-control datetime-input" type="text" id="deadline" name="deadline">
+								<input class="form-control description-input" type="text" id="description" name="description">
                                 <input class="input-type" type="hidden" name="type">
                             </div>
 
@@ -235,7 +245,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        {{$task->name}} - {{$task->created_at}}  <hr>
+                                        {{$task->name}} - {{$task->getDeadlineAttribute($task->created_at)}}  <hr>
                                     </td>
 
                                     <td>
@@ -256,17 +266,9 @@
         </div>
         <div class="col-md-8">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Информация</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
+                
                     @include('contacts.view.activity', ['contact' => $contact])
-                </div>
+                
             </div>
 
         </div>

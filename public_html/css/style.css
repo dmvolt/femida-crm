@@ -8244,3 +8244,14 @@ body.md-skin {
 .tablesorter th .glyphicon{
 	font-size: 10px;
 }
+
+.profile-element img.img-circle {
+  width: 70px;
+  height: 70px;
+}
+
+.left-title{
+	color: #fff;
+    margin-top: 25px;
+    margin-left: 23px;
+}

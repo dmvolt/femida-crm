@@ -21,7 +21,8 @@ class ContactPolicy extends AbstractPolicy
 
     public function delete(User $user, Contact $contact)
     {
-        return $contact->user_id == $user->id;
+        //return $contact->user_id == $user->id;
+		return $user->isAdmin();
     }
 
 }
