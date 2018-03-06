@@ -303,6 +303,18 @@ class ContactController extends Controller
 		
         return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
     }
+	
+	public function taskCanceled($id = null)
+    {
+		$task = Task::findOrFail($id);
+		$task->completed = 'no';
+		$task->income_id = 0;
+		$task->save();
+		
+		$user_id = \Auth::user()->id;
+		
+        return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
+    }
 
     public function taskCompleted($id = null)
     {

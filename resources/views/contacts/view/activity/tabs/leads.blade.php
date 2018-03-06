@@ -150,10 +150,28 @@
 			});
 		}
     }); */
+	
+	lead_list.on('click', '.payment-cancel', function () {
+		if(confirm('Вы уверены что хотите отменить оплату?')){
+			var button = $(this);
+
+			$.ajax({
+				type: "POST",
+				url: button.attr('data-action'),
+				data: {_token: window.Laravel.csrfToken},
+				success: function (content)
+				{
+					button.parent().parent().find('td.income-td').text('');
+					button.parent().parent().find('td.action-completed').hide();
+					button.parent().parent().find('td.action-active').show();
+				},
+			});
+		}
+    });
 
     lead_list.on('click', '.payment-remove', function () {
 
-		if(confirm('Вы уверены в своем действии?')){
+		if(confirm('Вы уверены что хотите удалить оплату?')){
 			var button = $(this);
 
 			$.ajax({

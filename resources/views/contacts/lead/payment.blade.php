@@ -5,17 +5,28 @@
 
     @can('update', $_lead)
         @if ($_payment->isCompleted())
-            <td>
+            <td class="action-completed">
                 <span class="" style="color: #1ab394;">Оплачено</span>
+				@if (\Auth::user()->isAdmin())
+					<button data-action="{{route('contacts.taskCanceled', ['taskId' => $_payment->id])}}" title="Отменить оплату" class="payment-cancel btn btn-default"><i class="fa fa-ban"></i></button>
+				@endif
+            </td>
+			<td class="action-active" style="display:none;">
+				<button data-task="{{$_payment->id}}" class="btn btn-default" id="payment-check-{{$_payment->id}}" title="Подтвердить оплату"><i class="fa fa-check"></i></button>
+				<button class="payment-edit btn btn-default"><i class="fa fa-pencil"></i></button>
+                <button data-action="{{route('contacts.taskDelete', ['taskId' => $_payment->id])}}" class="payment-remove btn btn-default" title="Удалить оплату"><i class="fa fa-trash"></i></button>
             </td>
         @else
-            <td>
-                <!--<button data-action="{{route('contacts.taskCompleted', ['taskId' => $_payment->id])}}" class="payment-check btn btn-default"><i class="fa fa-check"></i></button>-->
-                
-				<button data-task="{{$_payment->id}}" class="btn btn-default" id="payment-check-{{$_payment->id}}"><i class="fa fa-check"></i></button>
-                
+			<td class="action-completed" style="display:none;">
+                <span class="" style="color: #1ab394;">Оплачено</span>
+				@if (\Auth::user()->isAdmin())
+					<button data-action="{{route('contacts.taskCanceled', ['taskId' => $_payment->id])}}" title="Отменить оплату" class="payment-cancel btn btn-default"><i class="fa fa-ban"></i></button>
+				@endif
+            </td>
+            <td class="action-active">
+				<button data-task="{{$_payment->id}}" class="btn btn-default" id="payment-check-{{$_payment->id}}" title="Подтвердить оплату"><i class="fa fa-check"></i></button>
 				<button class="payment-edit btn btn-default"><i class="fa fa-pencil"></i></button>
-                <button data-action="{{route('contacts.taskDelete', ['taskId' => $_payment->id])}}" class="payment-remove btn btn-default"><i class="fa fa-trash"></i></button>
+                <button data-action="{{route('contacts.taskDelete', ['taskId' => $_payment->id])}}" class="payment-remove btn btn-default" title="Удалить оплату"><i class="fa fa-trash"></i></button>
             </td>
         @endif
     @else
@@ -74,11 +85,14 @@
 				
 				var currentPaymentTr = lead_list.find('tr#payment-' + currentTaskId);
 				
-				currentPaymentTr.find('.income-td').text(currentTaskIncome);
+				currentPaymentTr.find('td.income-td').text(currentTaskIncome);
 				
-				currentPaymentTr.find('button').each(function () {
+				currentPaymentTr.find('td.action-completed').show();
+				currentPaymentTr.find('td.action-active').hide();
+				
+				/* currentPaymentTr.find('button').each(function () {
 					$(this).attr('disabled', 'disabled');
-				});
+				}); */
 			}
 		});
 		

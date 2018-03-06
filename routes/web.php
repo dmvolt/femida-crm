@@ -26,7 +26,8 @@ Route::get('/contacts/#contact{contactId}', ['as' => 'contacts.view.department',
 
 Route::any('/contacts/show', ['as' => 'contacts.restShow', 'uses' => 'ContactController@restShow']);
 Route::any('/contacts/task/{contactId}', ['as' => 'contacts.task', 'uses' => 'ContactController@task'])->where('contactId', '[0-9]+');
-Route::any('/contacts/task/completed/{taskId?}', ['as' => 'contacts.taskCompleted', 'uses' => 'ContactController@taskCompleted'])->where('contactId', '[0-9]+');
+Route::any('/contacts/task/completed/{taskId?}', ['as' => 'contacts.taskCompleted', 'uses' => 'ContactController@taskCompleted'])->where('taskId', '[0-9]+');
+Route::any('/contacts/task/canceled/{taskId?}', ['as' => 'contacts.taskCanceled', 'uses' => 'ContactController@taskCanceled'])->where('taskId', '[0-9]+');
 Route::any('/contacts/task/appointment-completed', ['as' => 'contacts.taskAppointmentCompleted', 'uses' => 'ContactController@taskAppointmentCompleted']);
 
 Route::any('/contacts/store/{contactId?}', ['as' => 'contacts.store', 'uses' => 'ContactController@store']);
