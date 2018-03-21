@@ -34,7 +34,7 @@ abstract class AbstractPolicy
 
 	public function showLeader($user)
     {
-        if(($user->isLeader() && $user->team_id == 2) || $user->isDepLeader()){
+        if(($user->isLeader() && $user->team_id == 2) || $user->isDepLeader() || ($user->isManager() && $user->team_id == 2)){
 			return true;
 		}
     }

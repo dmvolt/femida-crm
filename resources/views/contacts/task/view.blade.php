@@ -53,7 +53,7 @@
 						
 						<div class="form-group" id="deadline-block-{{$task->id}}" style="display: none;">
 							<label for="deadline" class="control-label">Выберите новую дату</label><br>
-							<input class="form-control datetime-input" type="text" name="deadline">
+							<input class="form-control task-datetime-input" type="text" name="deadline">
 						</div>
 
 						<div class="form-group">

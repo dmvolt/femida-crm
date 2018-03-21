@@ -11,6 +11,8 @@ use App\Task;
 use App\TaskActivity;
 use App\TaskNotification;
 use App\User;
+use App\Notice;
+
 use Auth;
 use Cache;
 use Carbon\Carbon;
@@ -222,7 +224,14 @@ class TaskController extends Controller
                 $contact = $task->contact;
                 if ( $contact && $contact->phone )
                 {
-                    $text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.' Менеджер '.$task->user->name.', тел. '.$task->user->phone;
+					if($noticeModel = Notice::find(1)){
+						
+						$text = str_replace(Notice::$variables, array($task->user->department->address, $task->deadline, $task->user->name, $task->user->phone), $noticeModel->text);
+						
+					} else {
+						$text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.' Менеджер '.$task->user->name.', тел. '.$task->user->phone;
+					}
+					
                     $notifyData = [
                         'type' => 'sms',
                         'text' => $text,

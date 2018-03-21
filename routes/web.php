@@ -64,6 +64,8 @@ Route::any('/settings/income/store/{incomeId?}', ['as' => 'setting.income.store'
 Route::any('/settings/status/store/{statusId?}', ['as' => 'setting.status.store', 'uses' => 'SettingController@statusStore']);
 Route::any('/settings/origin/store/{originId?}', ['as' => 'setting.origin.store', 'uses' => 'SettingController@originStore']);
 
+Route::any('/settings/notification/store/{notificationId?}', ['as' => 'setting.notification.store', 'uses' => 'SettingController@notificationStore']);
+
 Route::get('/tasks', ['as' => 'tasks', 'uses' => 'TaskController@index']);
 Route::get('/tasks/types/{typeId}', ['as' => 'tasks.type', 'uses' => 'TaskController@showType'])->where('typeId', '[0-9]+');
 Route::get('/tasks/{taskId}', ['as' => 'tasks.view', 'uses' => 'TaskController@show'])->where('taskId', '[0-9]+');

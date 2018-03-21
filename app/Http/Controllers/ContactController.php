@@ -13,6 +13,7 @@ use App\LeadStatus;
 use App\Notifications\MessageNotification;
 use App\Task;
 use App\User;
+use App\Notice;
 use Carbon\Carbon;
 use Faker\Provider\at_AT\Payment;
 use function foo\func;
@@ -265,10 +266,16 @@ class ContactController extends Controller
             $contact = $task->contact;
             if ( $contact && $contact->phone )
             {
+				if($noticeModel = Notice::find(1)){
+					
+					$text = str_replace(Notice::$variables, array($task->user->department->address, $task->deadline, $task->user->name, $task->user->phone_work), $noticeModel->text);
+					
+				} else {
+					$text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.' Менеджер '.$task->user->name.', тел. '.$task->user->phone_work;
+				}
 				
-                $text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.' Менеджер '.$task->user->name.', тел. '.$task->user->phone_work;
 				$message = [
-					'text' => $text
+					'text' => $text,
 				];
 				
 				$contact->notify(new MessageNotification($message));

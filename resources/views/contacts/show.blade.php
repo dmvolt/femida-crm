@@ -217,7 +217,7 @@
                             
                             <div class="form-group clearfix" id="fg_deadline">
                                 <label for="deadline" class="col-sm-2 control-label control-label2 required">Дата</label>
-                                <input class="form-control datetime-input" type="text" id="deadline" name="deadline">
+                                <input class="form-control task-datetime-input" type="text" id="deadline" name="deadline">
 								<input class="form-control description-input" type="text" id="description" name="description">
                                 <input class="input-type" type="hidden" name="type">
                             </div>
@@ -278,6 +278,14 @@
 </div>
 
 <script type="text/javascript">
+	$('.task-datetime-input').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'ru',
+        todayBtn: 'linked',
+        autoclose: true,
+        orientation: "auto"
+    });
+	
     $('.remove-task').on('click', function () {
 
         if (confirm("Вы действительно хотите удалить эту задачу?"))

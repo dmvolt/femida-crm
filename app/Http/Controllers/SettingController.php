@@ -12,6 +12,7 @@ use App\ServicePayment;
 use App\Team;
 use App\User;
 use App\Task;
+use App\Notice;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
@@ -38,11 +39,12 @@ class SettingController extends Controller
         $statuses = $this->getStatusesContent();
         $teams = $this->getTeamsContent();
         $origins = $this->getOriginsContent();
+		$notifications = $this->getNotificationContent();
 		
 		$costs = $this->getCostsContent();
 		$incomes = $this->getIncomesContent();
 
-        return view('setting', compact('users', 'departments', 'services', 'statuses', 'teams', 'origins', 'costs', 'incomes'));
+        return view('setting', compact('users', 'departments', 'services', 'statuses', 'teams', 'origins', 'costs', 'incomes', 'notifications'));
     }
 
     /**
@@ -227,6 +229,36 @@ class SettingController extends Controller
         $title = 'Новая услуга';
         return $store->view('settings.services.store', compact('store', 'title'));
     }
+	
+	public function notificationStore($id = null)
+    {
+        if ( $id == null ) $id = \Input::get('modify', null);
+		
+		if($id){
+			$source = Notice::find($id);
+			$title = 'Редактирование оповещения';
+		} else {
+			$source = new Notice();
+			$title = 'Новое оповещение';
+		}
+        //$source = $id ? Notice::find($id) : new Notice();
+
+        $store = \DataForm::source($source);
+        $store->add('title', 'Наименование', 'text')->rule('required|min:2');
+		$store->add('type', 'Тип', 'select')->options(Notice::$typeNames);
+        $store->add('text', 'Текст', 'textarea')->rule('required|min:2');
+		
+        $store->submit('Сохранить');
+
+        $store->saved(function () use ($store) {
+            return redirect('/settings');
+        });
+
+        $store->build();
+		$variables = Notice::$templateVariables;
+		
+        return $store->view('notices.store', compact('store', 'title', 'variables'));
+    }
 
     public function departmentStore($id = null)
     {
@@ -396,6 +428,26 @@ class SettingController extends Controller
 
         $title = 'Контакты';
         return view('default.grid', compact('grid', 'title', 'filter'));
+    }
+	
+	public function getNotificationContent()
+    {
+        $grid = DataGrid::source(new Notice());
+        $grid->attributes(["class"=>"table table-striped table-bordered table-hover dataTables-example"]);
+
+        $grid->add('id','ID', true)->style("width:100px");
+        $grid->add('title','Наименование');
+        $grid->add('text','Текст');
+		$grid->add('type','Тип');
+
+        $grid->edit(route('setting.notification.store'), 'Редактировать','modify')->style("width:15px");
+        $grid->link(route('setting.notification.store'), "Новое оповещение", "TR");
+
+        $grid->orderBy('id','desc');
+        $grid->paginate(100);
+
+        $title = 'Оповещения';
+        return view('default.grid', compact('grid', 'title'));
     }
 
     public function getDepartmentContent()
