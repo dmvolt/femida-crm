@@ -47,6 +47,20 @@
             </div>
             <div class="panel-body" style="width: 100%; margin-left: 0;">
                 <div id="morris-bar-chart-all"></div>
+				
+				@if (\Auth::user()->isAdmin())
+					<h3>Data</h3>
+					<?php print_r($generalChartAll);?>
+					<hr>
+					<h3>Keys</h3>
+					<?php print_r($chartKeysAll);?>
+					<hr>
+					<h3>Labels</h3>
+					<?php print_r($chartLabelsAll);?>
+					<hr>
+					<h3>Colors</h3>
+					<?php print_r($chartColorsAll);?>
+				@endif
             </div>
         </div>
 		
@@ -56,6 +70,20 @@
             </div>
             <div class="panel-body" style="width: 100%; margin-left: 0;">
                 <div id="morris-bar-chart-cost"></div>
+				
+				@if (\Auth::user()->isAdmin())
+					<h3>Data</h3>
+					<?php print_r($generalChartCost);?>
+					<hr>
+					<h3>Keys</h3>
+					<?php print_r($chartKeysCost);?>
+					<hr>
+					<h3>Labels</h3>
+					<?php print_r($chartLabelsCost);?>
+					<hr>
+					<h3>Colors</h3>
+					<?php print_r($chartColorsCost);?>
+				@endif
             </div>
         </div>
 		
@@ -65,6 +93,20 @@
             </div>
             <div class="panel-body" style="width: 100%; margin-left: 0;">
                 <div id="morris-bar-chart-income"></div>
+				
+				@if (\Auth::user()->isAdmin())
+					<h3>Data</h3>
+					<?php print_r($generalChartIncome);?>
+					<hr>
+					<h3>Keys</h3>
+					<?php print_r($chartKeysIncome);?>
+					<hr>
+					<h3>Labels</h3>
+					<?php print_r($chartLabelsIncome);?>
+					<hr>
+					<h3>Colors</h3>
+					<?php print_r($chartColorsIncome);?>
+				@endif
 
                 <script type="text/javascript">
                     $(document).ready(function () {

@@ -89,6 +89,12 @@ class AnalyticsController extends Controller
 		for( $i =0; $i <= $dateEnd->diffInMonths($dateStart); $i++)
 		{
 			$name = $charDate->format('F');
+			
+			$profit_all = 0;
+			$expenses_all = 0;
+			
+			$expenses_arr = [];
+			$profit_arr = [];
 
 			$start = $charDate->toDateTimeString();
 			if ($dateEnd->diffInMonths($charDate) > 0) {
@@ -105,8 +111,11 @@ class AnalyticsController extends Controller
 						$expenses_sum = 0;
 						
 						foreach($costs as $cost){
-							$expenses = Expense::where('updated_at', '>=', $dateStart)
-							->where('updated_at', '<=', $dateEnd)
+							//$expenses = Expense::where('updated_at', '>=', $dateStart)
+							//->where('updated_at', '<=', $dateEnd)
+							
+							$expenses = Expense::where('updated_at', '>=', $start)
+							->where('updated_at', '<=', $end)
 							->where('cost_id', '=', $cost->id);
 
 							if($departmentId)
@@ -124,8 +133,11 @@ class AnalyticsController extends Controller
 
 			if($incomes){
 				foreach($incomes as $income){
-					$profit = Task::withPayments()->where('updated_at', '>=', $dateStart)
-					->where('updated_at', '<=', $dateEnd)
+					//$profit = Task::withPayments()->where('updated_at', '>=', $dateStart)
+					//->where('updated_at', '<=', $dateEnd)
+					
+					$profit = Task::withPayments()->where('updated_at', '>=', $start)
+					->where('updated_at', '<=', $end)
 					->where('income_id', '=', $income->id)
 					->where('completed', '=', 'yes');
 
