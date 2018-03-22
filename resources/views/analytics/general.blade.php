@@ -48,7 +48,7 @@
             <div class="panel-body" style="width: 100%; margin-left: 0;">
                 <div id="morris-bar-chart-all"></div>
 				
-				@if (\Auth::user()->isAdmin())
+				<!--@if (\Auth::user()->isAdmin())
 					<h3>Data</h3>
 					<?php print_r($generalChartAll);?>
 					<hr>
@@ -60,7 +60,7 @@
 					<hr>
 					<h3>Colors</h3>
 					<?php print_r($chartColorsAll);?>
-				@endif
+				@endif-->
             </div>
         </div>
 		
@@ -71,7 +71,7 @@
             <div class="panel-body" style="width: 100%; margin-left: 0;">
                 <div id="morris-bar-chart-cost"></div>
 				
-				@if (\Auth::user()->isAdmin())
+				<!--@if (\Auth::user()->isAdmin())
 					<h3>Data</h3>
 					<?php print_r($generalChartCost);?>
 					<hr>
@@ -83,7 +83,7 @@
 					<hr>
 					<h3>Colors</h3>
 					<?php print_r($chartColorsCost);?>
-				@endif
+				@endif-->
             </div>
         </div>
 		
@@ -94,7 +94,7 @@
             <div class="panel-body" style="width: 100%; margin-left: 0;">
                 <div id="morris-bar-chart-income"></div>
 				
-				@if (\Auth::user()->isAdmin())
+				<!--@if (\Auth::user()->isAdmin())
 					<h3>Data</h3>
 					<?php print_r($generalChartIncome);?>
 					<hr>
@@ -106,7 +106,7 @@
 					<hr>
 					<h3>Colors</h3>
 					<?php print_r($chartColorsIncome);?>
-				@endif
+				@endif-->
 
                 <script type="text/javascript">
                     $(document).ready(function () {
