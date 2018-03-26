@@ -62,6 +62,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+	
+	public static $statuses = [
+		'active' => 'Не заблокированные', 
+		'banned' => 'Заблокированные', 
+		'all' => 'Все пользователи',
+	];
 
     /**
      * The attributes that are mass assignable.

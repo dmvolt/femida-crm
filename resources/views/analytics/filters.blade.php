@@ -1,5 +1,11 @@
 <form role="form" class="form-inline" style="margin-bottom: 15px;">
     <div class="form-group" id="data_5">
+		<select class="form-control" name="user_status" id="user_status">
+            @foreach(\App\User::$statuses as $_statusAlias => $_statusName)
+                <option value="{{$_statusAlias}}" @if($userStatus == $_statusAlias) selected @endif>{{$_statusName}}</option>
+            @endforeach
+        </select>
+		
         <select class="form-control" name="department_id" id="department_id" @if( ! $canChangeDepartment ) disabled @endif>
             <option value="">Все филиалы</option>
             @foreach(\App\Department::all() as $_department)

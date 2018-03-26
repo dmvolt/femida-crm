@@ -44,8 +44,8 @@
 						
 						$last_login = 'Нет';
                     ?>
-                    @foreach(\App\User::filterDepartment($departmentId)->filterTeam($teamId)->get() as $user)
-
+                    @foreach(\App\User::filterDepartment($departmentId)->filterTeam($teamId)->typeUser($userStatus)->get() as $user)
+					
                         <?php
 						//$profitManager = $user->getProfitManager($departmentId, $dateStart, $dateEnd);
 						

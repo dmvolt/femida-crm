@@ -30,6 +30,7 @@ class AnalyticsController extends Controller
         $canChangeTeam = true;
         $canChangeDepartment = true;
 
+		$userStatus = Input::get('user_status', 'active');
         $departmentId = Input::get('department_id', null);
         $teamId = Input::get('team_id', null);
 
@@ -43,7 +44,6 @@ class AnalyticsController extends Controller
                 $canChangeTeam = false;
                 $teamId = \Auth::user()->team_id;
             }
-
         }
 
         $dateEndString = Input::get('dateEnd', null);
@@ -254,6 +254,7 @@ class AnalyticsController extends Controller
 			'dateEnd', 
 			'dateStart', 
 			'departmentId',
+			'userStatus',
 			
 			'generalChartAll', 
 			'chartKeysAll', 

@@ -388,8 +388,8 @@ class SettingController extends Controller
         $filter = \DataFilter::source($source);
         $filter->add('topSearch','Поиск', 'text')->scope('topSearch');
 
-        $userTypes = ['active' => 'Не заблокированные', 'banned' => 'Заблокированные', 'all' => 'Все пользователи'];
-        $filter->add('banned','Тип', 'select')->options($userTypes)->attributes(['class' => 'chosen-select-200px', 'data-placeholder' => 'Тип'])->scope('typeUser');
+       // $userTypes = ['active' => 'Не заблокированные', 'banned' => 'Заблокированные', 'all' => 'Все пользователи'];
+        $filter->add('banned', 'Тип', 'select')->options(User::$statuses)->attributes(['class' => 'chosen-select-200px', 'data-placeholder' => 'Тип'])->scope('typeUser');
 
         $roles = [null => 'Все роли'] + User::$roles;
         $filter->add('role_id','Роль', 'select')->options($roles)->attributes(['class' => 'chosen-select-200px', 'data-placeholder' => 'Роль']);
