@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Input;
 
+use Datetime;
+
 class AnalyticsController extends Controller
 {
     public $currentMenuId = 'analytics';
@@ -84,24 +86,30 @@ class AnalyticsController extends Controller
 		$profit_all = 0;
 		$expenses_all = 0;
 		
-        $charDate = $dateStart->copy();
+        //$charDate = $dateStart->copy();
 		
-		for( $i =0; $i <= $dateEnd->diffInMonths($dateStart); $i++)
-		{
-			$name = $charDate->format('F');
+		for ($rMonth = clone $dateStart; $rMonth <= $dateEnd; $rMonth->modify('first day of next month'))
+		{	
+		
+		/* for( $i =0; $i <= $dateEnd->diffInMonths($dateStart); $i++)
+		{ */
+			$name = $rMonth->format('F');
 			
 			$profit_all = 0;
 			$expenses_all = 0;
 			
 			$expenses_arr = [];
 			$profit_arr = [];
+			
+			$start = $rMonth->format('Y-m-d');
+			$end = min($dateEnd->format('Y-m-d'), $rMonth->format('Y-m-t'));
 
-			$start = $charDate->toDateTimeString();
+			/* $start = $charDate->toDateTimeString();
 			if ($dateEnd->diffInMonths($charDate) > 0) {
 				$end = $charDate->addMonth()->toDateTimeString();
 			} else {
 				$end = $charDate->addDays($dateEnd->diffInDays($charDate));
-			}
+			} */
 			 
 			if(!empty($allCosts)){
 				foreach($allCosts as $costType => $costs){

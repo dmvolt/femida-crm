@@ -64,7 +64,7 @@ class User extends Authenticatable
     use Notifiable;
 	
 	public static $statuses = [
-		'active' => 'Не заблокированные', 
+		'active' => 'Активные', 
 		'banned' => 'Заблокированные', 
 		'all' => 'Все пользователи',
 	];
