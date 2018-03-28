@@ -40,11 +40,11 @@ class TaskController extends Controller
 		}
 
         $tableRequest = DataGrid::source($newRequest);
-        $tableRequest->attributes(["class"=>"table table-hover issue-tracker"]);
+        $tableRequest->attributes(["class"=>"table table-hover issue-tracker add-task-table"]);
 
         $tableRequest->add('contact.name','Клиент');
         $tableRequest->add('created_at', 'Дата', true);
-        $tableRequest->add('request','Действия');
+        $tableRequest->add('request', 'Действия');
 
         $tableRequest->row(function ($row) {
             $row->cell('request')->value($row->data->request);

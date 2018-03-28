@@ -29,7 +29,7 @@ class Folder extends Model
 
         foreach ($this->myFiles as $_file)
         {
-            $file = collect(['text' => $_file->original_filename, 'icon' => 'fa fa-file-text-o']);
+            $file = collect(['href' => '/storage/'.$this->contact_id.'/'.$_file->filename, 'text' => $_file->original_filename, 'icon' => 'fa fa-file-text-o']);
             $collect->push($file);
         }
         return $collect;

@@ -31,7 +31,7 @@
             {{csrf_field()}}
 
             <div class="form-group clearfix">
-                <span id="div_name"><label for="name" class="required">Файл</label>
+                <span id="div_name"><label for="file" class="required">Файл</label>
                 <input class="form-control form-control" type="file" id="file" name="file"></span>
             </div>
 
@@ -39,9 +39,7 @@
             <button type="button" class="btn btn-white" id="file-cancel-save">Отмена</button>
         </form>
 
-        <div id="tree-view">
-
-        </div>
+        <div id="tree-view"></div>
     </div>
 </div>
 
@@ -67,8 +65,9 @@
             $('#tree-view').jstree({
                 'core' : {
                     'check_callback' : true,
+					'expand_selected_onload' : true,
                     'multiple': false,
-                    'data' : <?=$contact->folders->toJson()?>,
+                    'data' : <?= $contact->folders->toJson() ?>,
                 },
                 'plugins' : ['types', 'dnd', 'contextmenu'],
                 'types' : {
@@ -121,6 +120,14 @@
                                 "action": function (obj) {
                                     folderTree.delete($node);
                                 }
+                            },
+							"Download": {
+                                "separator_before": false,
+                                "separator_after": false,
+                                "label": "Открыть файл",
+                                "action": function (obj) {
+                                    folderTree.download($node);
+                                }
                             }
                         };
                     }
@@ -130,7 +137,16 @@
 
         delete: function (obj)
         {
-            window.location.href = "<?=route('folders.delete', ['contact_id' => $contact->id])?>?folder=" + obj.id;
+            window.location.href = "<?= route('folders.delete', ['contact_id' => $contact->id])?>?folder=" + obj.id;
+        },
+		
+		download: function (obj)
+        {
+			//console.log(obj.original.href);
+			if(obj.original.href != undefined){
+				//window.location.href = obj.original.href;
+				window.open(obj.original.href, '_blank');
+			}
         },
 
         upload: function (obj) {

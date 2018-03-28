@@ -43,7 +43,7 @@ class FolderController extends Controller
     {
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
-        Storage::disk('local')->put('/public/'.$contactId.'/'.$file->getFilename().'.'.$extension,  File::get($file));
+        Storage::disk('public')->put('/'.$contactId.'/'.$file->getFilename().'.'.$extension,  File::get($file));
 
         $entry = new MyFile();
         $entry->mime = $file->getClientMimeType();

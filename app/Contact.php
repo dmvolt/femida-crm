@@ -114,6 +114,17 @@ class Contact extends Model
     {
         return $this->hasMany('App\ContactActivity')->orderBy('id', 'desc');
     }
+	
+	public function allFilesCount()
+    {
+		$allCount = 0;
+		if($fldrs = $this->folders){
+			foreach($fldrs as $folder){
+				$allCount += $folder->myFiles->count();
+			}
+		}
+        return $allCount;
+    }
 
     public function folders()
     {

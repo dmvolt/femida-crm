@@ -152,10 +152,14 @@
 {!! Rapyd::scripts() !!}
 
 <script type="text/javascript">
-    $(document).on('click', '.glyphicon.glyphicon-trash,.confirm', function () {
-        return confirm('Вы действительно хотите это сделать?');
+	$(document).on('click', '.add-task-table .confirm', function () {
+        return confirm('Вы действительно хотите взять заявку?');
     });
-
+	
+    $(document).on('click', '.glyphicon.glyphicon-trash', function () {
+        return confirm('Вы действительно хотите удалить?');
+    });
+	
     $(".chosen-select").chosen();
     $(".chosen-select-80").chosen({width: "80%"});
     $(".chosen-select-width").chosen({width: "100%"});

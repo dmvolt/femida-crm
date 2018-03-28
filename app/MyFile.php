@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
 class MyFile extends Model
 {
     protected $appends = ['text'];
@@ -12,5 +10,4 @@ class MyFile extends Model
     {
         return $this->original_filename;
     }
-
 }
