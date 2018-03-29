@@ -113,6 +113,7 @@
                                     folderTree.upload($node);
                                 }
                             },
+							@if(\Auth::user()->isAdmin() || \Auth::user()->isDepLeader())
                             "Remove": {
                                 "separator_before": false,
                                 "separator_after": false,
@@ -121,6 +122,7 @@
                                     folderTree.delete($node);
                                 }
                             },
+							@endif
 							"Download": {
                                 "separator_before": false,
                                 "separator_after": false,
