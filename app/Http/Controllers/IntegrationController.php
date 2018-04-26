@@ -7,6 +7,7 @@ use App\Lead;
 use App\LeadStatus;
 use App\Contact;
 use App\ContactOrigin;
+use App\ContactData;
 use App\Task;
 use Carbon\Carbon;
 use Input;

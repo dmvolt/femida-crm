@@ -25,5 +25,4 @@ class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
 
         throw new AuthenticationException('Unauthenticated.', $guards);
     }
-
 }

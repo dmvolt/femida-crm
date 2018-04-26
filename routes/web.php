@@ -13,7 +13,6 @@
 
 Auth::routes();
 
-
 Route::get('/', function (){
     return redirect('/contacts');
 });
@@ -50,7 +49,6 @@ Route::any('/leads/delete/{leadId}', ['as' => 'leads.delete', 'uses' => 'LeadCon
 Route::any('/folders/create/{contactId}', ['as' => 'folders.create', 'uses' => 'FolderController@create']);
 Route::any('/folders/delete/{contactId}', ['as' => 'folders.delete', 'uses' => 'FolderController@delete']);
 Route::any('/folders/upload/{contactId}', ['as' => 'folders.upload', 'uses' => 'FolderController@upload']);
-
 
 Route::resource('settings', 'SettingController');
 Route::any('/settings/user/store/{contactId?}', ['as' => 'setting.user.store', 'uses' => 'SettingController@userStore']);
@@ -102,4 +100,4 @@ Route::get('/integration/{depId}/lead', ['as' => 'integration', 'uses' => 'Integ
 Route::get('/integration/{depId}/widget.js', ['as' => 'integrationWidget', 'uses' => 'IntegrationController@integrationWidget'])->where('depId', '[0-9]+');
 Route::any('/integration/{depId}/callbackkiller', ['as' => 'integrationCallbackkiller', 'uses' => 'IntegrationController@callbackkiller'])->where('depId', '[0-9]+');
 
-
+Route::any('/api/addLead', ['as' => 'api.addLead', 'uses' => 'ApiController@addLead']);
