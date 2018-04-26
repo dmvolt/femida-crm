@@ -72,7 +72,11 @@ class ApiController extends BaseController
 				\Log::info('API Contact Id - '.$contact->id);
 			}
 			
-			return '';
+			return response('', 200);
+		}
+		else
+		{
+			return response('Нет данных', 204);
 		}
     }
 }
