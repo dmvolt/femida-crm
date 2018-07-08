@@ -41,6 +41,7 @@ class TaskController extends Controller
 
         $tableRequest = DataGrid::source($newRequest);
         $tableRequest->attributes(["class"=>"table table-hover issue-tracker add-task-table"]);
+		$tableRequest->no_records_message = 'Заявок пока нет';
 
         $tableRequest->add('contact.name','Клиент');
         $tableRequest->add('created_at', 'Дата', true);
@@ -225,17 +226,17 @@ class TaskController extends Controller
                 if ( $contact && $contact->phone )
                 {
 					if($noticeModel = Notice::find(1)){
-						
-						$text = str_replace(Notice::$variables, array($task->user->department->address, $task->deadline, $task->user->name, $task->user->phone), $noticeModel->text);
+					
+						$text = str_replace(Notice::$variables, array($task->user->department->address, $task->deadline, $task->user->name, $task->user->team->name, $task->user->phone_work), $noticeModel->text);
 						
 					} else {
-						$text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.' Менеджер '.$task->user->name.', тел. '.$task->user->phone;
+						$text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.'. '.$task->user->name.', '.$task->user->team->name.', тел. '.$task->user->phone_work;
 					}
 					
-                    $notifyData = [
-                        'type' => 'sms',
-                        'text' => $text,
-                    ];
+					$notifyData = [
+						 'type' => 'sms',
+						'text' => $text,
+					];
 
                     $contact->notify(new MessageNotification($notifyData));
                 }

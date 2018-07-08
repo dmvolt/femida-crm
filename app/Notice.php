@@ -36,6 +36,7 @@ class Notice extends Model
         '{address}',
         '{date}',
 		'{managerName}',
+		'{managerPosition}',
 		'{managerPhone}',
     ];
 	
@@ -43,6 +44,7 @@ class Notice extends Model
         '{address}' => 'Адрес',
         '{date}' => 'Дата и время',
 		'{managerName}' => 'Менеджер',
+		'{managerPosition}' => 'Должность',
 		'{managerPhone}' => 'Телефон',
     ];
 }

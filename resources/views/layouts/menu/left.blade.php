@@ -50,6 +50,18 @@ $leads = \App\Lead::whereUserId(Auth::user()->id)->where('created_at', '>=', $da
 					@endcan
 				@endforeach
 			</ul>
+			<h4 class="left-title">Сервисы</h4>
+			<ul class="nav">
+				@foreach(Config::get('crm.menu3', []) as $_item)
+					@can($_item['police'], $_item['baseModel'])
+						<li>
+							<a href="{{$_item['url']}}" target="service-iframe">
+								<i class="{{$_item['icons']}}"></i> <span class="nav-label">{{$_item['name']}}</span>
+							</a>
+						</li>
+					@endcan
+				@endforeach
+			</ul>
 			<h4 class="left-title">Обучение</h4>
 			<ul class="nav">
 				@foreach(Config::get('crm.menu2', []) as $_item)

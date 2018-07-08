@@ -109,6 +109,11 @@ class User extends Authenticatable
     {
         return $this->name;
     }
+	
+	public function getFio()
+    {
+		return $this->lastname.' '.$this->name.' '.$this->phathername;
+    }
 
     public function getUrlAvatar()
     {
@@ -242,7 +247,7 @@ class User extends Authenticatable
         }
     }
 
-    public function scopeTypeUser($query, $value)
+    public function scopeTypeUser($query, $value = 'active')
     {
         if ( $value == 'banned' )
         {

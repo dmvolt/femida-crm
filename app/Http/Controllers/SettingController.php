@@ -63,7 +63,9 @@ class SettingController extends Controller
         $store = \DataForm::source($source);
 		
         $store->add('email','E-mail', 'text')->rule('required|min:5');
-        $store->add('name','Имя', 'text')->rule('required|min:2');
+        $store->add('lastname','Фамилия', 'text')->rule('min:2');
+		$store->add('name','Имя', 'text')->rule('required|min:2');
+		$store->add('phathername','Отчество', 'text')->rule('min:2');
 		
 		if ($id && $request->isMethod('post'))
         {
@@ -408,7 +410,11 @@ class SettingController extends Controller
         $grid->attributes(["class"=>"table table-striped table-bordered table-hover dataTables-example"]);
 
         $grid->add('id','ID', true)->style("width:100px");
-        $grid->add('name','ФИО');
+       // $grid->add('lastname','Фамилия');
+		$grid->add('name','ФИО')->cell( function($value, $row) {
+			return $row->getFio();
+		});
+		//$grid->add('phathername','Отчество');
         $grid->add('email','E-mail');
         $grid->add('phone','Телефон');
         $grid->add('phone_work','Рабочий');

@@ -94,7 +94,7 @@ class LeadController extends Controller
         $leadsTable->add('{{$contact->name or null}}', 'Контакт');
 		$leadsTable->add('{{$department->city or null}}', 'Город');
         $leadsTable->add('{{$service->name or null}}', 'Услуга');
-        $leadsTable->add('budget', 'Стомость');
+       // $leadsTable->add('budget', 'Стомость');
         $leadsTable->add('{{$status->name}}', 'Статус');
         $leadsTable->add('updated_at', 'Обновлено', true);
 

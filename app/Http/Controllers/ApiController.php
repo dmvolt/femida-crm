@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
+
+use App\Department;
+use App\Task;
+
 use App\Contact;
 use App\ContactData;
 use App\ContactOrigin;
@@ -17,6 +21,8 @@ class ApiController extends BaseController
 		//api/addLead?lastName=Иванов&firstName=Иван&secondName=Сергеевич&phone=89139845629&amount=300000&city=Сочи
 
 		if(Input::get()){
+			
+			$department = Department::findOrFail(6);
 			
 			\Log::info('API Поступили данные');
 
@@ -33,6 +39,7 @@ class ApiController extends BaseController
 			$city = Input::get('city');
 
 			$flag = true;
+			$task_flag = true;
 			
 			if (strlen($phone) >= 9) {
 				if ($phone{0} != '7' && $phone{0} != '8'){
@@ -70,6 +77,25 @@ class ApiController extends BaseController
 				$contactData->save();
 				
 				\Log::info('API Contact Id - '.$contact->id);
+				
+				if($task_flag){
+				
+					$task = new Task();
+
+					$task->name = 'ЛИД-КРЕДИТ';
+					$task->description = '';
+					$task->type = 'request';
+					$task->user_id = 0;
+					$task->author_id = 0;
+					$task->deadline = Carbon::now();
+					$task->contact_id = $contact->id;
+					$task->department_id = $department->id;
+					$task->save();
+					
+					\Log::info('API Task Id - '.$task->id);
+
+					Task::updateNewRequestCount();
+				}
 			}
 			
 			return response('', 200);

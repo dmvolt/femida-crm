@@ -75,5 +75,14 @@ return [
             'police' => 'showManager',
 			'baseModel' => new App\User,
         ]
+    ],
+	'menu3' => [
+        'manager' => [
+            'name' => 'Проверка клиента',
+            'icons' => 'fa fa-paper-plane',
+            'url' => '/client-verification?url=https://app.exbico.ru',
+            'police' => 'showManager',
+			'baseModel' => new App\User,
+        ]
     ]
 ];

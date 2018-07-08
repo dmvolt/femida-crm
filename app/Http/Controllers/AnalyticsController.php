@@ -102,7 +102,10 @@ class AnalyticsController extends Controller
 			$profit_arr = [];
 			
 			$start = $rMonth->format('Y-m-d');
+			$start = Carbon::parse($start);
+			
 			$end = min($dateEnd->format('Y-m-d'), $rMonth->format('Y-m-t'));
+			$end = Carbon::parse($end)->addHours(23)->addMinute(59);
 
 			/* $start = $charDate->toDateTimeString();
 			if ($dateEnd->diffInMonths($charDate) > 0) {
@@ -141,13 +144,22 @@ class AnalyticsController extends Controller
 
 			if($incomes){
 				foreach($incomes as $income){
-					//$profit = Task::withPayments()->where('updated_at', '>=', $dateStart)
-					//->where('updated_at', '<=', $dateEnd)
 					
-					$profit = Task::withPayments()->where('updated_at', '>=', $start)
+					$profit = Task::whereHas('user', function($q)
+					{
+						$userStatus = Input::get('user_status', 'active');
+						$q->typeUser($userStatus);
+					})
+					->where('updated_at', '>=', $start)
 					->where('updated_at', '<=', $end)
 					->where('income_id', '=', $income->id)
+					->where('type', '=', 'approved_payment')
 					->where('completed', '=', 'yes');
+					
+					/* $profit = Task::withPayments()->where('updated_at', '>=', $start)
+					->where('updated_at', '<=', $end)
+					->where('income_id', '=', $income->id)
+					->where('completed', '=', 'yes'); */
 
 					if ($departmentId)
 					{
@@ -260,7 +272,8 @@ class AnalyticsController extends Controller
 		
         return view('analytics', compact(
 			'dateEnd', 
-			'dateStart', 
+			'dateStart',
+			
 			'departmentId',
 			'userStatus',
 			

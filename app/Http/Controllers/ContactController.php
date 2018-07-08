@@ -29,6 +29,15 @@ class ContactController extends Controller
 {
     use DefaultControllerTrait;
     public $currentMenuId = 'contacts';
+	
+	public function clientVerification()
+	{
+		$url = Input::get('url', 'https://app.exbico.ru');
+        $title = 'Проверка клиента';
+        $content = view('client-verification', compact('url', 'title'));
+
+        return view('default.base', compact('content'));
+	}
 
 	public function showDepartment($id)
 	{
@@ -268,10 +277,10 @@ class ContactController extends Controller
             {
 				if($noticeModel = Notice::find(1)){
 					
-					$text = str_replace(Notice::$variables, array($task->user->department->address, $task->deadline, $task->user->name, $task->user->phone_work), $noticeModel->text);
+					$text = str_replace(Notice::$variables, array($task->user->department->address, $task->deadline, $task->user->name, $task->user->team->name, $task->user->phone_work), $noticeModel->text);
 					
 				} else {
-					$text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.' Менеджер '.$task->user->name.', тел. '.$task->user->phone_work;
+					$text = 'Вам назначена встреча по адресу '.$task->user->department->address.' на '.$task->deadline.'. '.$task->user->name.', '.$task->user->team->name.', тел. '.$task->user->phone_work;
 				}
 				
 				$message = [

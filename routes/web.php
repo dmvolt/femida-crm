@@ -18,6 +18,7 @@ Route::get('/', function (){
 });
 
 Route::get('/contacts', ['as' => 'contacts', 'uses' => 'ContactController@index']);
+Route::get('/client-verification', ['as' => 'client-verification', 'uses' => 'ContactController@clientVerification']);
 Route::get('/contacts/departments/{departmentId}', ['as' => 'contacts.department', 'uses' => 'ContactController@showDepartment'])->where('departmentId', '[0-9]+');
 
 Route::get('/contacts/departments/{departmentId}#contact{contactId}', ['as' => 'contacts.view', 'uses' => 'ContactController@show'])->where('contactId', '[0-9]+');
