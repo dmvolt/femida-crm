@@ -86,6 +86,9 @@
 				var currentPaymentTr = lead_list.find('tr#payment-' + currentTaskId);
 				
 				currentPaymentTr.find('td.income-td').text(currentTaskIncome);
+				currentPaymentTr.find('td.deadline-td').text(content.deadline);
+				
+				//console.log(content);
 				
 				currentPaymentTr.find('td.action-completed').show();
 				currentPaymentTr.find('td.action-active').hide();

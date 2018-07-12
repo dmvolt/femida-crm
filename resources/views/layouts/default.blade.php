@@ -230,6 +230,7 @@
 		$(".birth-date").inputmask("99-99-9999");
 		//$(".sum").inputmask({mask: "(9 999)|(99 999)|(999 999)", greedy: false});
 		$(".inn").inputmask("999999999999");
+		$(".snils").inputmask("999 999 999 99");
 		$(".passport-num").inputmask("9999 999999");
 		$(".passport-code").inputmask("999-999");
 		

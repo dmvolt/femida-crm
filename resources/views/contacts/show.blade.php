@@ -17,7 +17,7 @@
 </div>
 <div class="modal-body">
     <div class="row animated fadeIn">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Информация о клиенте</h5>
@@ -77,6 +77,10 @@
                                         <tr>
                                             <td><strong>ИНН:</strong></td>
                                             <td>{{$contact->data->contact_inn or null}}</td>
+                                        </tr>
+										<tr>
+                                            <td><strong>СНИЛС:</strong></td>
+                                            <td>{{$contact->data->snils or null}}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Сумма кредита:</strong></td>
@@ -264,7 +268,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="ibox float-e-margins">
                 
                     @include('contacts.view.activity', ['contact' => $contact])

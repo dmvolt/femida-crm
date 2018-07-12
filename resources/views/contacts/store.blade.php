@@ -74,6 +74,9 @@
 									<div class="form-group clearfix">
                                         {!! $store->render('data.contact_inn', ['class' => 'inn']) !!}
                                     </div>
+									<div class="form-group clearfix">
+                                        {!! $store->render('data.snils', ['class' => 'snils']) !!}
+                                    </div>
                                 </div>
 
                                 <div class="col-md-5" style="margin-left: 15px;">

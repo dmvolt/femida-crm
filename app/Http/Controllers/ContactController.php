@@ -167,6 +167,7 @@ class ContactController extends Controller
 		$store->add('data.contact_birth', 'Дата рождения', 'text');
 		$store->add('data.contact_address', 'Место жительства(факт.)', 'text');
 		$store->add('data.contact_inn', 'ИНН', 'text');
+		$store->add('data.snils', 'СНИЛС', 'text');
 
         $this->preferValues($store);
         $store->submit('Сохранить');
@@ -337,17 +338,21 @@ class ContactController extends Controller
 		if($id){
 			$task = Task::findOrFail($id);
 			$task->completed = 'yes';
+			$task->deadline = Carbon::now();
 		} else {
 			$id = Input::get('task_id');
 			$task = Task::findOrFail($id);
 			$task->completed = 'yes';
+			$task->deadline = Carbon::now();
 			$task->income_id = Input::get('income_id');
 		}
         $task->save();
 		
 		$user_id = \Auth::user()->id;
 		
-        return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
+		return $task;
+		
+        //return view('contacts.task.view', ['task' => $task, 'user_id' => $user_id]);
     }
 
     public function show($id)

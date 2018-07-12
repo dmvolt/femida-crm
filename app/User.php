@@ -137,7 +137,7 @@ class User extends Authenticatable
     public function tasks()
     {
 		//return $this->belongsToMany('App\Task', 'tasks_users');
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class, 'user_id', 'id');
     }
 
     public function department()

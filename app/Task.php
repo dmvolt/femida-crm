@@ -314,6 +314,11 @@ class Task extends Model
             return Carbon::parse($value)->format('d.m.Y H:i');
         }
     }
+	
+	public function cpltd()
+    {
+        return $this->completed == 'yes';
+    }
 
     public function isCompleted()
     {

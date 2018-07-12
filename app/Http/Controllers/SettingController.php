@@ -135,13 +135,13 @@ class SettingController extends Controller
 		
         $store->saved(function () use ($store, $changePassword) 
 		{
-			if ($store->model->blocked == 1)
+			if ($store->model->tasks && $store->model->blocked == 1)
 			{
 				$depLeader = User::all()->where('department_id', '=', $store->model->department_id)->where('role_id', '=', '4')->first();
 				
 				foreach($store->model->tasks as $task) 
 				{
-					if (!$task->isComleted()) {
+					if (!$task->cpltd()) {
 						$task->user()->dissociate($store->model);
 						$task->user()->associate($depLeader);
 						$task->save();
